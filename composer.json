@@ -1,0 +1,10 @@
+{
+    "require": {
+        "ocramius/proxy-manager": "master-dev",
+        "zendframework/zend-server": "2.*",
+        "zendframework/zend-http": "2.*"
+    },
+    "autoload": {
+        "psr-0": { "Fourmation\\" : "" }
+    }
+}
