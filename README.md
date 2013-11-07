@@ -45,9 +45,10 @@ var_dump($location->getAddress()); // '28 Foveaux Street'
 
 ## Rest versioning
 
-This project offer two way for the versioning :
+This project offer three way for the versioning :
 * versioning included in a header (recommended)
 * versioning included in URL
+* versioning included in URL parameter
 
 ```php
 use ProxyManager\Factory\RemoteObjectFactory;
