@@ -4,6 +4,8 @@ namespace RestRemoteObjectTest;
 
 use RestRemoteObject\Adapter\Rest as RestAdapter;
 use RestRemoteObject\Client\Rest as RestClient;
+use RestRemoteObject\Client\Rest\Versioning\HeaderVersioningStrategy;
+use RestRemoteObject\Client\Rest\Authentication\TokenAuthenticationStrategy;
 
 use RestRemoteObjectTestAsset\Models\User;
 use RestRemoteObjectTestAsset\Options\PaginationOptions;
@@ -14,15 +16,22 @@ use ProxyManager\Factory\RemoteObjectFactory;
 
 class FunctionalTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @var RestClient
+     */
+    protected $restClient;
+
+    protected $httpClient;
+
     protected $remote;
 
     public function setUp()
     {
-        $client = new RestClient('http://my-company.com/rest');
-        $client->setHttpClient(new HttpClient());
+        $this->restClient = new RestClient('http://my-company.com/rest');
+        $this->restClient->setHttpClient($this->httpClient = new HttpClient());
 
         $factory = new RemoteObjectFactory(
-            new RestAdapter($client)
+            new RestAdapter($this->restClient)
         );
         $this->remote = $factory->createProxy('RestRemoteObjectTestAsset\Services\LocationServiceInterface');
     }
@@ -55,5 +64,23 @@ class FunctionalTest extends PHPUnit_Framework_TestCase
 
         $locations = $this->remote->getAllFromUser($user, $pagination);
         $this->assertEquals(2, count($locations));
+    }
+
+    public function testCanVersionApi()
+    {
+        $this->restClient->setVersioningStrategy(new HeaderVersioningStrategy('v3', 'json'));
+        $this->remote->get(1);
+
+        $lastRequest = $this->httpClient->getLastRawRequest();
+        $this->assertEquals("GET http://my-company.com/rest/locations/1 HTTP/1.1\r\nRest-Version: v3+json", trim($lastRequest,  "\r\n"));
+    }
+
+    public function testCanAuthenticateRequest()
+    {
+        $this->restClient->setAuthenticationStrategy(new TokenAuthenticationStrategy('qwerty'));
+        $this->remote->get(1);
+
+        $lastRequest = $this->httpClient->getLastRawRequest();
+        $this->assertEquals("GET http://my-company.com/rest/locations/1?token=qwerty HTTP/1.1", trim($lastRequest,  "\r\n"));
     }
 }

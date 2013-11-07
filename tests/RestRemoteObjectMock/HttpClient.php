@@ -6,11 +6,17 @@ use RestRemoteObjectTestAsset\Models\Location;
 
 use Zend\Http\Client as BaseHttpClient;
 use Zend\Http\Response;
+use Zend\Http\Request;
 
 class HttpClient extends BaseHttpClient
 {
     public function send(Request $request = null)
     {
+        if (!$request) {
+            $request = $this->getRequest();
+        }
+        $this->lastRawRequest = $request->toString();
+
         $uri = $this->getUri();
         $response = new Response();
 

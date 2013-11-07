@@ -14,6 +14,16 @@ class TokenAuthenticationStrategy implements AuthenticationStrategyInterface
     protected $token;
 
     /**
+     * @param string $token
+     */
+    public function __construct($token = null)
+    {
+        if ($token) {
+            $this->setToken($token);
+        }
+    }
+
+    /**
      * Authenticate the request
      * @param Request $request
      * @return void

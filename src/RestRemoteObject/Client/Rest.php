@@ -5,6 +5,7 @@ namespace RestRemoteObject\Client;
 use RestRemoteObject\Client\Rest\MethodDescriptor;
 use RestRemoteObject\Client\Rest\ResponseHandler;
 use RestRemoteObject\Client\Rest\Authentication\AuthenticationStrategyInterface;
+use RestRemoteObject\Client\Rest\Versioning\VersioningStrategyInterface;
 
 use Zend\Http\Client as HttpClient;
 use Zend\Server\Client as ClientInterface;
@@ -25,6 +26,11 @@ class Rest implements ClientInterface
      * @var AuthenticationStrategyInterface $authenticationStrategy
      */
     protected $authenticationStrategy;
+
+    /**
+     * @var VersioningStrategyInterface $versioningStrategy
+     */
+    protected $versioningStrategy;
 
     /**
      * @param string $uri
@@ -58,6 +64,18 @@ class Rest implements ClientInterface
             case 'PUT';
                 $client->setParameterPost($params);
                 break;
+        }
+
+        $request = $client->getRequest();
+
+        $authenticationStrategy = $this->getAuthenticationStrategy();
+        if ($authenticationStrategy) {
+            $authenticationStrategy->authenticate($request);
+        }
+
+        $versioningStrategy = $this->getVersioningStrategy();
+        if ($versioningStrategy) {
+            $versioningStrategy->version($request);
         }
 
         $response = $client->send();
@@ -106,6 +124,27 @@ class Rest implements ClientInterface
     public function setAuthenticationStrategy(AuthenticationStrategyInterface $authenticationStrategy)
     {
         $this->authenticationStrategy = $authenticationStrategy;
+
+        return $this;
+    }
+
+    /**
+     * Get the versioning strategy
+     * @return VersioningStrategyInterface
+     */
+    public function getVersioningStrategy()
+    {
+        return $this->versioningStrategy;
+    }
+
+    /**
+     * Set the versioning strategy
+     * @param VersioningStrategyInterface $versioningStrategy
+     * @return $this
+     */
+    public function setVersioningStrategy(VersioningStrategyInterface $versioningStrategy)
+    {
+        $this->versioningStrategy = $versioningStrategy;
 
         return $this;
     }

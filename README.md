@@ -43,7 +43,43 @@ $location = $proxy->get(1); // The result is automatically converted to a `\Mode
 var_dump($location->getAddress()); // '28 Foveaux Street'
 ```
 
+## Rest versioning
+
+This project offer two way for the versioning :
+* versioning included in a header (recommended)
+* versioning included in URL
+
+```php
+use ProxyManager\Factory\RemoteObjectFactory;
+use RestRemoteObject\Adapter\Rest as RestAdapter;
+use RestRemoteObject\Client\Rest as RestClient;
+use RestRemoteObject\Client\Rest\Versioning\HeaderVersioningStrategy;
+
+$versioning = new HeaderVersioningStrategy('3.0', 'json');
+
+$client = new RestClient('http://my-company.com/rest');
+$client->setVersioningStrategy($versioning);
+
+$factory = new RemoteObjectFactory(
+    new RestAdapter(
+        $client
+    )
+);
+
+// proxy is your remote implementation
+$proxy = $factory->createProxy('LocationServiceInterface');
+
+$location = $proxy->get(1); // A header "Rest-Version: v3+json" will be added
+
+var_dump($location->getAddress()); // '28 Foveaux Street'
+```
+
 ## Rest authentication
+
+Three authentication strategy are available :
+* Query authentication (recommended)
+* HTTP authentication
+* simple token
 
 You can easily use an authentication with your REST client :
 
@@ -51,9 +87,9 @@ You can easily use an authentication with your REST client :
 use ProxyManager\Factory\RemoteObjectFactory;
 use RestRemoteObject\Adapter\Rest as RestAdapter;
 use RestRemoteObject\Client\Rest as RestClient;
-use RestRemoteObject\Client\Rest\AuthenticationQuery\AuthenticationStrategy;
+use RestRemoteObject\Client\Rest\Authentication\QueryAuthenticationStrategy;
 
-$queryAuth = new AuthenticationStrategy();
+$queryAuth = new QueryAuthenticationStrategy();
 $queryAuth->setPublicKey('12345689');
 $queryAuth->setPrivateKey('qwerty');
 
@@ -73,8 +109,6 @@ $location = $proxy->get(1); // Your request will be `http://my-company.com/rest/
 
 var_dump($location->getAddress()); // '28 Foveaux Street'
 ```
-
-Three authentication strategy are available : HTTP authentication, simple token and the query authentication.
 
 ## TODO
 
