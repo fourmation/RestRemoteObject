@@ -1,6 +1,6 @@
 # Rest Remote Object
 
-This library provide a REST adapter for the Remote Object pattern implemented by ProxyManager project.
+This library provide a REST adapter for the Remote Object pattern implemented by the ProxyManager project.
 A REST client is also provided to facilitate the REST interaction.
 
 ## Rest Adapter examples
@@ -39,6 +39,8 @@ $factory = RemoteObjectFactory(
 $proxy = $factory->createProxy('LocationServiceInterface');
 
 $location = $proxy->get(1); // The result is automatically converted to a `\Models\Location` class.
+
+var_dump($location->getAddress()); // '28 Foveaux Street'
 ```
 
 ## Rest authentication
@@ -68,6 +70,16 @@ $factory = new RemoteObjectFactory(
 $proxy = $factory->createProxy('LocationServiceInterface');
 
 $location = $proxy->get(1); // Your request will be `http://my-company.com/rest/locations/1?public_key=12345689&signature=aaa665b46e1060c6b7e5a6b5c891c37312149ece`
+
+var_dump($location->getAddress()); // '28 Foveaux Street'
 ```
 
 Three authentication strategy are available : HTTP authentication, simple token and the query authentication.
+
+## TODO
+
+* XML response conversion
+* Custom response conversion
+* Rest client, MethodDescriptor, ResponseHandler & RestParametersAware unit tests
+* RestParametersAware documentation
+* URI building examples
