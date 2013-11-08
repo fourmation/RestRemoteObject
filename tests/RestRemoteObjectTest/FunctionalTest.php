@@ -6,6 +6,7 @@ use RestRemoteObject\Adapter\Rest as RestAdapter;
 use RestRemoteObject\Client\Rest as RestClient;
 use RestRemoteObject\Client\Rest\Versioning\HeaderVersioningStrategy;
 use RestRemoteObject\Client\Rest\Authentication\TokenAuthenticationStrategy;
+use RestRemoteObject\Client\Rest\Format\HeaderFormatStrategy;
 
 use RestRemoteObjectTestAsset\Models\User;
 use RestRemoteObjectTestAsset\Options\PaginationOptions;
@@ -27,7 +28,7 @@ class FunctionalTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->restClient = new RestClient('http://my-company.com/rest');
+        $this->restClient = new RestClient('http://my-company.com/rest', new HeaderFormatStrategy('json'));
         $this->restClient->setHttpClient($this->httpClient = new HttpClient());
 
         $factory = new RemoteObjectFactory(
@@ -68,11 +69,11 @@ class FunctionalTest extends PHPUnit_Framework_TestCase
 
     public function testCanVersionApi()
     {
-        $this->restClient->setVersioningStrategy(new HeaderVersioningStrategy('v3', 'json'));
+        $this->restClient->setVersioningStrategy(new HeaderVersioningStrategy('v3'));
         $this->remote->get(1);
 
         $lastRequest = $this->httpClient->getLastRawRequest();
-        $this->assertEquals("GET http://my-company.com/rest/locations/1 HTTP/1.1\r\nRest-Version: v3+json", trim($lastRequest,  "\r\n"));
+        $this->assertEquals("GET http://my-company.com/rest/locations/1 HTTP/1.1\r\nRest-Version: v3\r\nContent-type: application/json", trim($lastRequest,  "\r\n"));
     }
 
     public function testCanAuthenticateRequest()
@@ -81,15 +82,15 @@ class FunctionalTest extends PHPUnit_Framework_TestCase
         $this->remote->get(1);
 
         $lastRequest = $this->httpClient->getLastRawRequest();
-        $this->assertEquals("GET http://my-company.com/rest/locations/1?token=qwerty HTTP/1.1", trim($lastRequest,  "\r\n"));
+        $this->assertEquals("GET http://my-company.com/rest/locations/1?token=qwerty HTTP/1.1\r\nContent-type: application/json", trim($lastRequest,  "\r\n"));
     }
 
     public function testCanAddTimestampFeature()
     {
-        $this->restClient->addFeature(new RestClient\Feature\Timestamp());
+        $this->restClient->addFeature(new RestClient\Feature\TimestampFeature());
         $this->remote->get(1);
 
         $lastRequest = $this->httpClient->getLastRawRequest();
-        $this->assertEquals("GET http://my-company.com/rest/locations/1?t=" . time() . ' HTTP/1.1', trim($lastRequest,  "\r\n"));
+        $this->assertEquals("GET http://my-company.com/rest/locations/1?t=" . time() . " HTTP/1.1\r\nContent-type: application/json", trim($lastRequest,  "\r\n"));
     }
 }

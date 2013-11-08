@@ -3,6 +3,7 @@
 namespace RestRemoteObject\Client\Rest\ResponseHandler;
 
 use RestRemoteObject\Client\Rest\MethodDescriptor;
+use RestRemoteObject\Client\Rest\Format\FormatStrategyInterface;
 
 use Zend\Http\Response;
 use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
@@ -15,18 +16,20 @@ class DefaultResponseHandler implements ResponseHandlerInterface
     protected $key;
 
     /**
-     * @param $format
+     * @param FormatStrategyInterface $format
      * @param MethodDescriptor $descriptor
      * @param Response $response
      * @return array
      */
-    public function buildResponse($format, MethodDescriptor $descriptor, Response $response)
+    public function buildResponse(FormatStrategyInterface $format, MethodDescriptor $descriptor, Response $response)
     {
         $content = $response->getBody();
-        if ($format == ResponseHandlerInterface::JSON_RESPONSE) {
+        if ($format->isJson()) {
             $content = json_decode($content);
-        } else {
+        } else if ($format->isXml()) {
             // TODO
+        } else {
+            // error
         }
 
         $key = $this->getKey();

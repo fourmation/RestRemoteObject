@@ -126,7 +126,7 @@ $queryAuth->setPublicKey('12345689');
 $queryAuth->setPrivateKey('qwerty');
 
 $client = new RestClient('http://my-company.com/rest');
-$client->addFeature(new Timestamp());
+$client->addFeature(new TimestampFeature());
 
 $factory = new RemoteObjectFactory(
     new RestAdapter(

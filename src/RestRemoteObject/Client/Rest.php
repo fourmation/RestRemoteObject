@@ -5,6 +5,7 @@ namespace RestRemoteObject\Client;
 use RestRemoteObject\Client\Rest\MethodDescriptor;
 use RestRemoteObject\Client\Rest\ResponseHandler;
 use RestRemoteObject\Client\Rest\Authentication\AuthenticationStrategyInterface;
+use RestRemoteObject\Client\Rest\Format\FormatStrategyInterface;
 use RestRemoteObject\Client\Rest\Versioning\VersioningStrategyInterface;
 use RestRemoteObject\Client\Rest\ResponseHandler\ResponseHandlerInterface;
 use RestRemoteObject\Client\Rest\ResponseHandler\DefaultResponseHandler;
@@ -24,6 +25,11 @@ class Rest implements ClientInterface
      * @var HttpClient $client
      */
     protected $client;
+
+    /**
+     * @var AuthenticationStrategyInterface $formatStrategy
+     */
+    protected $formatStrategy;
 
     /**
      * @var AuthenticationStrategyInterface $authenticationStrategy
@@ -47,12 +53,12 @@ class Rest implements ClientInterface
 
     /**
      * @param string $uri
-     * @param string $format
+     * @param FormatStrategyInterface $formatStrategy
      */
-    public function __construct($uri, $format = ResponseHandlerInterface::JSON_RESPONSE)
+    public function __construct($uri, FormatStrategyInterface $formatStrategy)
     {
         $this->uri = $uri;
-        $this->format = $format;
+        $this->formatStrategy = $formatStrategy;
     }
 
     /**
@@ -91,6 +97,8 @@ class Rest implements ClientInterface
             $versioningStrategy->version($request);
         }
 
+        $this->formatStrategy->format($request);
+
         foreach ($this->features as $feature) {
             $feature->apply($request);
         }
@@ -98,7 +106,7 @@ class Rest implements ClientInterface
         $response = $client->send();
 
         $responseHandler = $this->getResponseHandler();
-        return $responseHandler->buildResponse($this->format, $descriptor, $response);
+        return $responseHandler->buildResponse($this->formatStrategy, $descriptor, $response);
     }
 
     /**

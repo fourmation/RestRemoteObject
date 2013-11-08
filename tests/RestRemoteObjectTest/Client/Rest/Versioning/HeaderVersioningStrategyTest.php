@@ -11,7 +11,7 @@ class HeaderVersioningStrategyTest extends PHPUnit_Framework_TestCase
 {
     public function testCanVersionApi()
     {
-        $strategy = new HeaderVersioningStrategy('v3', 'json');
+        $strategy = new HeaderVersioningStrategy('v3');
 
         $this->assertInstanceOf('RestRemoteObject\Client\Rest\Versioning\VersioningStrategyInterface', $strategy);
 
@@ -21,6 +21,6 @@ class HeaderVersioningStrategyTest extends PHPUnit_Framework_TestCase
         $strategy->version($request);
 
         $headers = $request->getHeaders()->toString();
-        $this->assertEquals('Rest-Version: v3+json', trim($headers, "\r\n"));
+        $this->assertEquals('Rest-Version: v3', trim($headers, "\r\n"));
     }
 }

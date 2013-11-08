@@ -3,19 +3,17 @@
 namespace RestRemoteObject\Client\Rest\ResponseHandler;
 
 use RestRemoteObject\Client\Rest\MethodDescriptor;
+use RestRemoteObject\Client\Rest\Format\FormatStrategyInterface;
 
 use Zend\Http\Response;
 
 interface ResponseHandlerInterface
 {
-    CONST JSON_RESPONSE = 'json_response';
-    CONST XML_RESPONSE = 'xml_response';
-
-        /**
-     * @param $format
+    /**
+     * @param FormatStrategyInterface $format
      * @param MethodDescriptor $descriptor
      * @param Response $response
      * @return array
      */
-    public function buildResponse($format, MethodDescriptor $descriptor, Response $response);
+    public function buildResponse(FormatStrategyInterface $format, MethodDescriptor $descriptor, Response $response);
 }

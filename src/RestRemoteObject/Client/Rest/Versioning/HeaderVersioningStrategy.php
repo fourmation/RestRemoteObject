@@ -12,24 +12,17 @@ class HeaderVersioningStrategy implements VersioningStrategyInterface
     protected $version;
 
     /**
-     * @var string $format
-     */
-    protected $format;
-
-    /**
      * @var string $header
      */
     protected $header;
 
     /**
      * @param string $version
-     * @param string $format
      * @param string $header
      */
-    public function __construct($version, $format, $header = 'Rest-Version')
+    public function __construct($version, $header = 'Rest-Version')
     {
         $this->version = $version;
-        $this->format = $format;
         $this->header = $header;
     }
 
@@ -40,7 +33,6 @@ class HeaderVersioningStrategy implements VersioningStrategyInterface
      */
     public function version(Request $request)
     {
-        $request->getHeaders()->addHeaderLine($this->header . ': ' . $this->version . '+' . $this->format);
-
+        $request->getHeaders()->addHeaderLine($this->header . ': ' . $this->version);
     }
 }

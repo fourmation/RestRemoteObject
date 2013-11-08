@@ -4,7 +4,7 @@ namespace RestRemoteObject\Client\Rest\Feature;
 
 use Zend\Http\Request;
 
-class Timestamp implements  FeatureInterface
+class TimestampFeature implements FeatureInterface
 {
     /**
      * @param Request $request
