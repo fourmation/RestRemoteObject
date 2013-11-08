@@ -111,10 +111,40 @@ $location = $proxy->get(1); // Your request will be `http://my-company.com/rest/
 var_dump($location->getAddress()); // '28 Foveaux Street'
 ```
 
+## Feature
+
+To apply feature on your API request, just implement the FeatureInterface and use the `addFeature` method. Example with the timestamp feature :
+
+```php
+use ProxyManager\Factory\RemoteObjectFactory;
+use RestRemoteObject\Adapter\Rest as RestAdapter;
+use RestRemoteObject\Client\Rest as RestClient;
+use RestRemoteObject\Client\Rest\Feature\Timestamp;
+
+$queryAuth = new QueryAuthenticationStrategy();
+$queryAuth->setPublicKey('12345689');
+$queryAuth->setPrivateKey('qwerty');
+
+$client = new RestClient('http://my-company.com/rest');
+$client->addFeature(new Timestamp());
+
+$factory = new RemoteObjectFactory(
+    new RestAdapter(
+        $client
+    )
+);
+
+// proxy is your remote implementation
+$proxy = $factory->createProxy('LocationServiceInterface');
+
+$location = $proxy->get(1); // Your request will be `http://my-company.com/rest/locations/1?t=1383881696`
+
+var_dump($location->getAddress()); // '28 Foveaux Street'
+```
+
 ## TODO
 
 * XML response conversion
-* Custom response conversion
 * Rest client, MethodDescriptor, ResponseHandler & RestParametersAware unit tests
 * RestParametersAware documentation
 * URI building examples

@@ -83,4 +83,13 @@ class FunctionalTest extends PHPUnit_Framework_TestCase
         $lastRequest = $this->httpClient->getLastRawRequest();
         $this->assertEquals("GET http://my-company.com/rest/locations/1?token=qwerty HTTP/1.1", trim($lastRequest,  "\r\n"));
     }
+
+    public function testCanAddTimestampFeature()
+    {
+        $this->restClient->addFeature(new RestClient\Feature\Timestamp());
+        $this->remote->get(1);
+
+        $lastRequest = $this->httpClient->getLastRawRequest();
+        $this->assertEquals("GET http://my-company.com/rest/locations/1?t=" . time() . ' HTTP/1.1', trim($lastRequest,  "\r\n"));
+    }
 }

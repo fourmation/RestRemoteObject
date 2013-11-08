@@ -6,6 +6,9 @@ use RestRemoteObject\Client\Rest\MethodDescriptor;
 use RestRemoteObject\Client\Rest\ResponseHandler;
 use RestRemoteObject\Client\Rest\Authentication\AuthenticationStrategyInterface;
 use RestRemoteObject\Client\Rest\Versioning\VersioningStrategyInterface;
+use RestRemoteObject\Client\Rest\ResponseHandler\ResponseHandlerInterface;
+use RestRemoteObject\Client\Rest\ResponseHandler\DefaultResponseHandler;
+use RestRemoteObject\Client\Rest\Feature\FeatureInterface;
 
 use Zend\Http\Client as HttpClient;
 use Zend\Server\Client as ClientInterface;
@@ -33,10 +36,20 @@ class Rest implements ClientInterface
     protected $versioningStrategy;
 
     /**
+     * @var ResponseHandlerInterface $responseHandler
+     */
+    protected $responseHandler;
+
+    /**
+     * @var FeatureInterface[] $features
+     */
+    protected $features = array();
+
+    /**
      * @param string $uri
      * @param string $format
      */
-    public function __construct($uri, $format = ResponseHandler::JSON_RESPONSE)
+    public function __construct($uri, $format = ResponseHandlerInterface::JSON_RESPONSE)
     {
         $this->uri = $uri;
         $this->format = $format;
@@ -78,10 +91,14 @@ class Rest implements ClientInterface
             $versioningStrategy->version($request);
         }
 
+        foreach ($this->features as $feature) {
+            $feature->apply($request);
+        }
+
         $response = $client->send();
 
-        $response = new ResponseHandler($this->format, $descriptor, $response);
-        return $response->getResult();
+        $responseHandler = $this->getResponseHandler();
+        return $responseHandler->buildResponse($this->format, $descriptor, $response);
     }
 
     /**
@@ -145,6 +162,43 @@ class Rest implements ClientInterface
     public function setVersioningStrategy(VersioningStrategyInterface $versioningStrategy)
     {
         $this->versioningStrategy = $versioningStrategy;
+
+        return $this;
+    }
+
+    /**
+     * Get the response handler
+     * @return ResponseHandlerInterface
+     */
+    public function getResponseHandler()
+    {
+        if (null === $this->responseHandler) {
+            $this->setResponseHandler(new DefaultResponseHandler());
+        }
+
+        return $this->responseHandler;
+    }
+
+    /**
+     * Set the response handler
+     * @param ResponseHandlerInterface $responseHandler
+     * @return $this
+     */
+    public function setResponseHandler(ResponseHandlerInterface $responseHandler)
+    {
+        $this->responseHandler = $responseHandler;
+
+        return $this;
+    }
+
+    /**
+     * Add feature
+     * @param FeatureInterface $feature
+     * @return $this
+     */
+    public function addFeature(FeatureInterface $feature)
+    {
+        $this->features[] = $feature;
 
         return $this;
     }
