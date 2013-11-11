@@ -145,6 +145,6 @@ var_dump($location->getAddress()); // '28 Foveaux Street'
 ## TODO
 
 * XML response conversion
-* Rest client, MethodDescriptor, ResponseHandler & RestParametersAware unit tests
+* ResponseHandler & RestParametersAware unit tests
 * RestParametersAware documentation
 * URI building examples
