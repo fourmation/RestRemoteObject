@@ -12,6 +12,7 @@ class ExtensionFormatStrategy extends  AbstractFormatStrategy
      */
     public function format(Request $request)
     {
-
+        $uri = $request->getUri();
+        $uri->setPath($uri->getPath() . '.' . $this->format);
     }
 }
