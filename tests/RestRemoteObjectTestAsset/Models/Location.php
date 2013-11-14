@@ -2,9 +2,23 @@
 
 namespace RestRemoteObjectTestAsset\Models;
 
-class Location
+use RestRemoteObject\Client\Rest\RestParametersAware;
+
+class Location implements RestParametersAware
 {
+    protected $id;
+
     protected $address;
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function setId($id)
+    {
+        return $this->id = $id;
+    }
 
     public function getAddress()
     {
@@ -14,5 +28,10 @@ class Location
     public function setAddress($address)
     {
         return $this->address = $address;
+    }
+
+    public function getRestParameters()
+    {
+        return array('location' => $this->getId());
     }
 }

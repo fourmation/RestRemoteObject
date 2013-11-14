@@ -2,11 +2,13 @@
 
 namespace RestRemoteObjectTestAsset\Models;
 
-use RestRemoteObject\Client\Rest\RestParametersAware;
-
-class User implements RestParametersAware
+class User
 {
     protected $id;
+
+    protected $name;
+
+    protected $locations;
 
     public function getId()
     {
@@ -18,8 +20,28 @@ class User implements RestParametersAware
         return $this->id = $id;
     }
 
-    public function getRestParameters()
+    public function getName()
     {
-        return array('user' => $this->getId());
+        return $this->name;
+    }
+
+    public function setName($name)
+    {
+        return $this->name = $name;
+    }
+
+    /**
+     * @http GET
+     * @uri /locations?user=%getId
+     * @return \RestRemoteObjectTestAsset\Models\Location[]
+     */
+    public function getLocations()
+    {
+        return $this->locations;
+    }
+
+    public function setLocations(array $locations)
+    {
+        $this->locations = $locations;
     }
 }

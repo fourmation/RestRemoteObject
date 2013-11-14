@@ -50,6 +50,14 @@ class MethodDescriptor
     }
 
     /**
+     * @return bool
+     */
+    public function isValid()
+    {
+        return $this->getHttpMethod() && $this->getApiResource();
+    }
+
+    /**
      * Get the method reflection
      * @return MethodReflection
      */
@@ -66,15 +74,17 @@ class MethodDescriptor
     /**
      * Get the HTTP method from the REST webservice
      * @return string
-     * @throws MissingResourceDescriptionException
      */
     public function getHttpMethod()
     {
         if (null === $this->httpMethod) {
             $docBlock   = $this->getReflection()->getDocBlock();
+            if (!$docBlock) {
+                return null;
+            }
             $http = $docBlock->getTag('http');
             if (!$http) {
-                throw new MissingResourceDescriptionException(sprintf('Method %s docblock must defined a @http tag which provide the HTTP method to use', $this->method));
+                return null;
             }
             $this->httpMethod  = $docBlock->getTag('http')->getContent();
         }
@@ -85,16 +95,18 @@ class MethodDescriptor
     /**
      * Get the URI resource from the REST webservice
      * @return string
-     * @throws MissingResourceDescriptionException
      */
     public function getApiResource()
     {
         if (null === $this->apiResource) {
             $reflection = $this->getReflection();
             $docBlock   = $reflection->getDocBlock();
+            if (!$docBlock) {
+                return null;
+            }
             $uri = $docBlock->getTag('uri');
             if (!$uri) {
-                throw new MissingResourceDescriptionException(sprintf('Method %s docblock must defined a @uri tag which provide the resource URI to use', $this->method));
+                return null;
             }
             $this->apiResource  = $uri->getContent();
 

@@ -2,21 +2,20 @@
 
 namespace RestRemoteObjectTest;
 
-use RestRemoteObjectTestAsset\Models\User;
-use RestRemoteObject\Client\Rest\RestParametersAware;
+use RestRemoteObjectTestAsset\Models\Location;
 use PHPUnit_Framework_TestCase;
 
 class RestParametersAwareTest extends PHPUnit_Framework_TestCase
 {
     public function testCanGetArgs()
     {
-        $user = new User();
-        $user->setId(1);
+        $location = new Location();
+        $location->setId(1);
 
-        $this->assertInstanceOf('RestRemoteObject\Client\Rest\RestParametersAware', $user);
+        $this->assertInstanceOf('RestRemoteObject\Client\Rest\RestParametersAware', $location);
 
-        $args = $user->getRestParameters();
+        $args = $location->getRestParameters();
         $this->assertTrue(is_array($args));
-        $this->assertTrue(isset($args['user']));
+        $this->assertTrue(isset($args['location']));
     }
 }

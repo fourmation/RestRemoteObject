@@ -4,6 +4,7 @@ namespace RestRemoteObjectMock;
 
 use RestRemoteObjectTestAsset\Models\Location;
 
+use RestRemoteObjectTestAsset\Models\User;
 use Zend\Http\Client as BaseHttpClient;
 use Zend\Http\Response;
 use Zend\Http\Request;
@@ -20,48 +21,52 @@ class HttpClient extends BaseHttpClient
         $uri = $this->getUri();
         $response = new Response();
 
-        if (preg_match('#locations$#', $uri->toString())) {
+        if ($request->getMethod() == 'POST' && preg_match('#users#', $uri->toString())) {
             $post = $this->getRequest()->getPost()->toArray();
-            $location = new Location();
-            $location->setAddress($post[0]['address']);
+            $user = new User();
+            $user->setName($post[0]['name']);
 
             $content = json_encode(array(
                 array(
-                    'address' => $location->getAddress(),
+                    'name' => $user->getName(),
                 ),
             ));
             $response->setContent($content);
         }
 
-        if (preg_match('#locations\/\d$#', $uri->toString())) {
-            $location = new Location();
-            $location->setAddress('Pitt Street');
+        else if (preg_match('#users\/\d$#', $uri->toString())) {
+            $user = new User();
+            $user->setName('Vincent');
 
             $content = json_encode(array(
                 array(
-                    'address' => $location->getAddress(),
+                    'name' => $user->getName(),
                 ),
             ));
             $response->setContent($content);
         }
 
-        if (preg_match('#locations\/\?user#', $uri->toString())) {
-            $location1 = new Location();
-            $location1->setAddress('George Street');
+        else if (preg_match('#users#', $uri->toString())) {
+            $user1 = new User();
+            $user1->setName('Vincent');
 
-            $location2 = new Location();
-            $location2->setAddress('Pitt Street');
+            $user2 = new User();
+            $user2->setName('Dave');
 
             $content = json_encode(array(
                 array(
-                    'address' => $location1->getAddress(),
+                    'name' => $user1->getName(),
                 ),
                 array(
-                    'address' => $location2->getAddress(),
+                    'name' => $user2->getName(),
                 ),
             ));
             $response->setContent($content);
-        };
+        }
+
+        else {
+            throw new \RuntimeException('Http mock routing error : ' . $uri->toString());
+        }
 
         return $response;
     }

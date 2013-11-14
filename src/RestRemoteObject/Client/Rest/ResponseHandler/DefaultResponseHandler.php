@@ -46,7 +46,7 @@ class DefaultResponseHandler implements ResponseHandlerInterface
         if (count($content) > 1) {
             $list       = array();
             foreach ($content as $data) {
-                $object = new $returnType();
+                $object = $this->createInstance($returnType);
                 $hydrator->hydrate((array)$data, $object);
                 $list[] = $object;
             }
@@ -54,9 +54,19 @@ class DefaultResponseHandler implements ResponseHandlerInterface
             return $list;
         }
 
-        $object = new $returnType();
+        $object = $this->createInstance($returnType);
         $hydrator->hydrate((array)$content[0], $object);
         return $object;
+    }
+
+    /**
+     * Create instance
+     * @param $returnType
+     * @return object
+     */
+    protected function createInstance($returnType)
+    {
+        return new $returnType();
     }
 
     /**

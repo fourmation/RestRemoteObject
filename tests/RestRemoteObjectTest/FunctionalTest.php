@@ -7,8 +7,9 @@ use RestRemoteObject\Client\Rest as RestClient;
 use RestRemoteObject\Client\Rest\Versioning\HeaderVersioningStrategy;
 use RestRemoteObject\Client\Rest\Authentication\TokenAuthenticationStrategy;
 use RestRemoteObject\Client\Rest\Format\HeaderFormatStrategy;
+use RestRemoteObject\Client\Rest\ResponseHandler\GhostObjectResponseHandler;
 
-use RestRemoteObjectTestAsset\Models\User;
+use RestRemoteObjectTestAsset\Models\Location;
 use RestRemoteObjectTestAsset\Options\PaginationOptions;
 use RestRemoteObjectMock\HttpClient;
 
@@ -34,37 +35,37 @@ class FunctionalTest extends PHPUnit_Framework_TestCase
         $factory = new RemoteObjectFactory(
             new RestAdapter($this->restClient)
         );
-        $this->remote = $factory->createProxy('RestRemoteObjectTestAsset\Services\LocationServiceInterface');
+        $this->remote = $factory->createProxy('RestRemoteObjectTestAsset\Services\UserServiceInterface');
     }
 
     public function testCanProxyService()
     {
-        $this->assertInstanceOf('RestRemoteObjectTestAsset\Services\LocationServiceInterface', $this->remote);
+        $this->assertInstanceOf('RestRemoteObjectTestAsset\Services\UserServiceInterface', $this->remote);
     }
 
     public function testCanMakeAGETRequest()
     {
-        $location = $this->remote->get(1);
-        $this->assertInstanceOf('RestRemoteObjectTestAsset\Models\Location', $location);
-        $this->assertEquals('Pitt Street', $location->getAddress());
+        $user = $this->remote->get(1);
+        $this->assertInstanceOf('RestRemoteObjectTestAsset\Models\User', $user);
+        $this->assertEquals('Vincent', $user->getName());
     }
 
     public function testCanMakeAPOSTRequest()
     {
-        $location = $this->remote->create(array('address' => 'Elizabeth Street', 'city' => 'Sydney'));
-        $this->assertInstanceOf('RestRemoteObjectTestAsset\Models\Location', $location);
-        $this->assertEquals('Elizabeth Street', $location->getAddress());
+        $user = $this->remote->create(array('name' => 'Dave'));
+        $this->assertInstanceOf('RestRemoteObjectTestAsset\Models\User', $user);
+        $this->assertEquals('Dave', $user->getName());
     }
 
     public function testCanMakeAPaginatedRequest()
     {
-        $user = new User();
-        $user->setId(1);
+        $location = new Location();
+        $location->setId(1);
 
         $pagination = new PaginationOptions(0, 20);
 
-        $locations = $this->remote->getAllFromUser($user, $pagination);
-        $this->assertEquals(2, count($locations));
+        $users = $this->remote->getUsersFromLocation($location, $pagination);
+        $this->assertEquals(2, count($users));
     }
 
     public function testCanVersionApi()
@@ -73,7 +74,7 @@ class FunctionalTest extends PHPUnit_Framework_TestCase
         $this->remote->get(1);
 
         $lastRequest = $this->httpClient->getLastRawRequest();
-        $this->assertEquals("GET http://my-company.com/rest/locations/1 HTTP/1.1\r\nRest-Version: v3\r\nContent-type: application/json", trim($lastRequest,  "\r\n"));
+        $this->assertEquals("GET http://my-company.com/rest/users/1 HTTP/1.1\r\nRest-Version: v3\r\nContent-type: application/json", trim($lastRequest,  "\r\n"));
     }
 
     public function testCanAuthenticateRequest()
@@ -82,7 +83,7 @@ class FunctionalTest extends PHPUnit_Framework_TestCase
         $this->remote->get(1);
 
         $lastRequest = $this->httpClient->getLastRawRequest();
-        $this->assertEquals("GET http://my-company.com/rest/locations/1?token=qwerty HTTP/1.1\r\nContent-type: application/json", trim($lastRequest,  "\r\n"));
+        $this->assertEquals("GET http://my-company.com/rest/users/1?token=qwerty HTTP/1.1\r\nContent-type: application/json", trim($lastRequest,  "\r\n"));
     }
 
     public function testCanAddTimestampFeature()
@@ -91,6 +92,15 @@ class FunctionalTest extends PHPUnit_Framework_TestCase
         $this->remote->get(1);
 
         $lastRequest = $this->httpClient->getLastRawRequest();
-        $this->assertEquals("GET http://my-company.com/rest/locations/1?t=" . time() . " HTTP/1.1\r\nContent-type: application/json", trim($lastRequest,  "\r\n"));
+        $this->assertEquals("GET http://my-company.com/rest/users/1?t=" . time() . " HTTP/1.1\r\nContent-type: application/json", trim($lastRequest,  "\r\n"));
+    }
+
+    public function testCanPilotResultObject()
+    {
+        $this->restClient->setResponseHandler(new GhostObjectResponseHandler($this->restClient));
+        $user = $this->remote->get(1);
+        $locations = $user->getLocations();
+
+        $this->assertEquals(2, count($locations));
     }
 }

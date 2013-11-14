@@ -10,6 +10,7 @@ use RestRemoteObject\Client\Rest\Versioning\VersioningStrategyInterface;
 use RestRemoteObject\Client\Rest\ResponseHandler\ResponseHandlerInterface;
 use RestRemoteObject\Client\Rest\ResponseHandler\DefaultResponseHandler;
 use RestRemoteObject\Client\Rest\Feature\FeatureInterface;
+use RestRemoteObject\Client\Rest\Exception\MissingResourceDescriptionException;
 
 use Zend\Http\Client as HttpClient;
 use Zend\Server\Client as ClientInterface;
@@ -67,6 +68,9 @@ class Rest implements ClientInterface
     public function call($method, $params = array())
     {
         $descriptor = new MethodDescriptor($method, $params);
+        if (!$descriptor->isValid()) {
+            throw new MissingResourceDescriptionException(sprintf('Method %s docblock must defined a @http tag which provide the HTTP method to use ann a @uri tag', $this->method));
+        }
 
         $client = $this->getHttpClient();
         $client->setUri($this->uri . $descriptor->getApiResource());
