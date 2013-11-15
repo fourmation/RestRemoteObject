@@ -97,7 +97,8 @@ class FunctionalTest extends PHPUnit_Framework_TestCase
 
     public function testCanPilotResultObject()
     {
-        $this->restClient->getResponseHandler()->setResponseBuilder(new GhostObjectBuilder($this->restClient));
+        $responseHandler = $this->restClient->getResponseHandler();
+        $responseHandler->setResponseBuilder(new GhostObjectBuilder($this->restClient));
         $user = $this->remote->get(1);
         $locations = $user->getLocations();
 
