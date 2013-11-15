@@ -142,8 +142,29 @@ $location = $proxy->get(1); // Your request will be `http://my-company.com/rest/
 var_dump($location->getAddress()); // '28 Foveaux Street'
 ```
 
-## TODO
+## Custom response parser
 
-* XML response conversion
-* RestParametersAware documentation
-* URI building examples
+Two response parser are provided : XML and JSON. The parser is selected automatically based on the response format.
+You can write your own parser, just implements the `RestRemoteObject\Client\Rest\ResponseHandler\Parser\ParserInterface` interface and set your parser like this :
+
+```php
+use ProxyManager\Factory\RemoteObjectFactory;
+use RestRemoteObject\Adapter\Rest as RestAdapter;
+use RestRemoteObject\Client\Rest as RestClient;
+
+$client = new RestClient('http://my-company.com/rest');
+$client->getResponseHandler()->getResponseParser(new MyParser()); // create your own logic here
+
+$factory = new RemoteObjectFactory(
+    new RestAdapter(
+        $client
+    )
+);
+
+// proxy is your remote implementation
+$proxy = $factory->createProxy('LocationServiceInterface');
+
+$location = $proxy->get(1);
+
+var_dump($location->getAddress()); // '28 Foveaux Street'
+```
