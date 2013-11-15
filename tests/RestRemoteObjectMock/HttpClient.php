@@ -27,12 +27,12 @@ class HttpClient extends BaseHttpClient
             $user->setId(1);
             $user->setName($post[0]['name']);
 
-            $content = json_encode(array(
+            $content = json_encode(
                 array(
                     'id' => $user->getId(),
                     'name' => $user->getName(),
-                ),
-            ));
+                )
+            );
             $response->setContent($content);
         }
 
@@ -41,12 +41,12 @@ class HttpClient extends BaseHttpClient
             $user->setId(1);
             $user->setName('Vincent');
 
-            $content = json_encode(array(
+            $content = json_encode(
                 array(
                     'id' => $user->getId(),
                     'name' => $user->getName(),
-                ),
-            ));
+                )
+            );
             $response->setContent($content);
         }
 
@@ -73,11 +73,11 @@ class HttpClient extends BaseHttpClient
             $location1->setId(1);
             $location1->setAddress('Pitt Street');
 
-            $content = json_encode(array(
+            $content = json_encode(
                 array(
                     'address' => $location1->getAddress(),
-                ),
-            ));
+                )
+            );
             $response->setContent($content);
         }
 

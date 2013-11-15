@@ -34,7 +34,7 @@ class DefaultBuilder implements BuilderInterface
         }
 
         $object = new $returnType;
-        $hydrator->hydrate((array)$data[0], $object);
+        $hydrator->hydrate((array)$data, $object);
         return $object;
     }
 }

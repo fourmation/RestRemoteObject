@@ -57,7 +57,7 @@ class GhostObjectBuilder implements BuilderInterface
         }
 
         $object = $this->createInstance($returnType);
-        $hydrator->hydrate((array)$data[0], $object);
+        $hydrator->hydrate((array)$data, $object);
         return $object;
     }
 
