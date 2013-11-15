@@ -52,16 +52,6 @@ class DefaultResponseHandler implements ResponseHandlerInterface
     }
 
     /**
-     * Create instance
-     * @param $returnType
-     * @return object
-     */
-    protected function createInstance($returnType)
-    {
-        return new $returnType();
-    }
-
-    /**
      * Get response parser
      *
      * @return ParserInterface
