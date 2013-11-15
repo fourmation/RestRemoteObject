@@ -2,61 +2,53 @@
 
 namespace RestRemoteObject\Client\Rest\ResponseHandler;
 
-use RestRemoteObject\Client\Rest\MethodDescriptor;
+use RestRemoteObject\Client\Rest\ResourceDescriptor;
 use RestRemoteObject\Client\Rest\Format\FormatStrategyInterface;
+use RestRemoteObject\Client\Rest\ResponseHandler\Parser\JsonParser;
+use RestRemoteObject\Client\Rest\ResponseHandler\Parser\ParserInterface;
+use RestRemoteObject\Client\Rest\ResponseHandler\Builder\BuilderInterface;
+use RestRemoteObject\Client\Rest\ResponseHandler\Builder\DefaultBuilder;
 
+use RestRemoteObject\Client\Rest\ResponseHandler\Parser\XmlParser;
 use Zend\Http\Response;
-use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 class DefaultResponseHandler implements ResponseHandlerInterface
 {
     /**
-     * @var string
+     * @var ParserInterface $parser
      */
-    protected $key;
+    protected $parser;
+
+    /**
+     * @var BuilderInterface $builder
+     */
+    protected $builder;
 
     /**
      * @param FormatStrategyInterface $format
-     * @param MethodDescriptor $descriptor
+     * @param ResourceDescriptor $descriptor
      * @param Response $response
      * @return array
+     * @throws \RuntimeException
      */
-    public function buildResponse(FormatStrategyInterface $format, MethodDescriptor $descriptor, Response $response)
+    public function buildResponse(FormatStrategyInterface $format, ResourceDescriptor $descriptor, Response $response)
     {
         $content = $response->getBody();
-        if ($format->isJson()) {
-            $content = json_decode($content);
-        } else if ($format->isXml()) {
-            // TODO
-        } else {
-            // error
-        }
-
-        $key = $this->getKey();
-        if ($key) {
-            $content = $content[$key];
-        }
-
-        $returnType = $descriptor->getReturnType();
-        if (!$returnType) {
-            return;
-        }
-        $hydrator   = new ClassMethodsHydrator();
-
-        if (count($content) > 1) {
-            $list       = array();
-            foreach ($content as $data) {
-                $object = $this->createInstance($returnType);
-                $hydrator->hydrate((array)$data, $object);
-                $list[] = $object;
+        $responseParser = $this->getResponseParser();
+        if (null === $responseParser) {
+            if ($format->isJson()) {
+                $responseParser = new JsonParser();
+            } else if ($format->isXml()) {
+                $responseParser = new XmlParser();
+            } else {
+                throw new \RuntimeException('You have to specify a response parser');
             }
-
-            return $list;
         }
 
-        $object = $this->createInstance($returnType);
-        $hydrator->hydrate((array)$content[0], $object);
-        return $object;
+        $content = $responseParser->parse($content);
+
+        $builder = $this->getResponseBuilder();
+        return $builder->build($content, $descriptor);
     }
 
     /**
@@ -70,21 +62,45 @@ class DefaultResponseHandler implements ResponseHandlerInterface
     }
 
     /**
-     * @return string
+     * Get response parser
+     *
+     * @return ParserInterface
      */
-    public function getKey()
+    public function getResponseParser()
     {
-        return $this->key;
+        return $this->parser;
     }
 
     /**
-     * @param string $key
-     * @return $this
+     * Set response parser
+     *
+     * @param ParserInterface $parser
      */
-    public function setKey($key)
+    public function setResponseParser(ParserInterface $parser)
     {
-        $this->key = $key;
+        $this->parser = $parser;
+    }
 
-        return $this;
+    /**
+     * Get response builder
+     *
+     * @return BuilderInterface
+     */
+    public function getResponseBuilder()
+    {
+        if (null === $this->builder) {
+            $this->setResponseBuilder(new DefaultBuilder());
+        }
+        return $this->builder;
+    }
+
+    /**
+     * Set response builder
+     *
+     * @param BuilderInterface $builder
+     */
+    public function setResponseBuilder($builder)
+    {
+        $this->builder = $builder;
     }
 }

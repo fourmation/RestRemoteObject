@@ -7,14 +7,14 @@ A REST client is also provided to facilitate the REST interaction.
 
 A remote object proxy is an object that is located on a different system, but is used as if it was available locally.
 
-To use the REST remote object, add two tags to yours services interfaces : @http to define the HTTP method to use and @uri to define the resource URI :
+To use the REST remote object, add two tags to yours services interfaces : @rest\http to define the HTTP method to use and @uri to define the resource URI :
 
 ```php
 interface LocationServiceInterface
 {
     /**
-     * @http GET
-     * @uri /locations/%id
+     * @rest\http GET
+     * @rest\uri /locations/%id
      * @param int $id
      * @return \Models\Location
      */

@@ -17,7 +17,7 @@ class User
 
     public function setId($id)
     {
-        return $this->id = $id;
+        $this->id = $id;
     }
 
     public function getName()
@@ -31,8 +31,8 @@ class User
     }
 
     /**
-     * @http GET
-     * @uri /locations?user=%getId
+     * @rest\http GET
+     * @rest\uri /locations?user=:getId
      * @return \RestRemoteObjectTestAsset\Models\Location[]
      */
     public function getLocations()

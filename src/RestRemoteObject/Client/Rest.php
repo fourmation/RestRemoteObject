@@ -2,7 +2,7 @@
 
 namespace RestRemoteObject\Client;
 
-use RestRemoteObject\Client\Rest\MethodDescriptor;
+use RestRemoteObject\Client\Rest\ResourceDescriptor;
 use RestRemoteObject\Client\Rest\ResponseHandler;
 use RestRemoteObject\Client\Rest\Authentication\AuthenticationStrategyInterface;
 use RestRemoteObject\Client\Rest\Format\FormatStrategyInterface;
@@ -67,11 +67,21 @@ class Rest implements ClientInterface
      */
     public function call($method, $params = array())
     {
-        $descriptor = new MethodDescriptor($method, $params);
+        $descriptor = new ResourceDescriptor($method, $params);
         if (!$descriptor->isValid()) {
-            throw new MissingResourceDescriptionException(sprintf('Method %s docblock must defined a @http tag which provide the HTTP method to use ann a @uri tag', $this->method));
+            throw new MissingResourceDescriptionException(sprintf('Method %s docblock must defined a @rest\http tag which provide the HTTP method to use ann a @rest\uri tag', $this->method));
         }
 
+        return $this->callResource($descriptor);
+    }
+
+    /**
+     * @param ResourceDescriptor $descriptor
+     * @return array
+     */
+    public function callResource(ResourceDescriptor $descriptor)
+    {
+        $params = $descriptor->getParams();
         $client = $this->getHttpClient();
         $client->setUri($this->uri . $descriptor->getApiResource());
 

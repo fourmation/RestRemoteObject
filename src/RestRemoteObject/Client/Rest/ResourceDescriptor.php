@@ -7,7 +7,7 @@ use RestRemoteObject\Client\Rest\Exception\MissingResourceDescriptionException;
 use Zend\Code\Reflection\MethodReflection;
 use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
-class MethodDescriptor
+class ResourceDescriptor
 {
     /**
      * @var string
@@ -18,6 +18,11 @@ class MethodDescriptor
      * @var string
      */
     protected $params;
+
+    /**
+     * @var object
+     */
+    protected $object;
 
     /**
      * @var MethodReflection
@@ -40,6 +45,11 @@ class MethodDescriptor
     protected $returnType;
 
     /**
+     * @var bool
+     */
+    protected $returnAsArray = false;
+
+    /**
      * @param string $method
      * @param array $params
      */
@@ -55,6 +65,14 @@ class MethodDescriptor
     public function isValid()
     {
         return $this->getHttpMethod() && $this->getApiResource();
+    }
+
+    /**
+     * @param object $object
+     */
+    public function bind($object)
+    {
+        $this->object = $object;
     }
 
     /**
@@ -82,11 +100,11 @@ class MethodDescriptor
             if (!$docBlock) {
                 return null;
             }
-            $http = $docBlock->getTag('http');
+            $http = $docBlock->getTag('rest\http');
             if (!$http) {
                 return null;
             }
-            $this->httpMethod  = $docBlock->getTag('http')->getContent();
+            $this->httpMethod  = $docBlock->getTag('rest\http')->getContent();
         }
 
         return $this->httpMethod;
@@ -104,7 +122,7 @@ class MethodDescriptor
             if (!$docBlock) {
                 return null;
             }
-            $uri = $docBlock->getTag('uri');
+            $uri = $docBlock->getTag('rest\uri');
             if (!$uri) {
                 return null;
             }
@@ -128,8 +146,12 @@ class MethodDescriptor
                         $parametersList[$parameter->getName()] = $this->params[$parameter->getPosition()];
                     }
                 }
-                $this->apiResource = preg_replace('/%(\w+)/e', '$parametersList["$1"]', $this->apiResource);
             }
+        }
+
+        $this->apiResource = @preg_replace('/%(\w+)/e', '$parametersList["$1"]', $this->apiResource);
+        if ($this->object) {
+            $this->apiResource = @preg_replace('/:(\w+)/e', '$this->object->$1()', $this->apiResource);
         }
 
         return $this->apiResource;
@@ -154,10 +176,28 @@ class MethodDescriptor
             // for bqsic type, add cast
             $this->returnType = $reflection->getNamespaceName() . $return->getType();
             if (preg_match('#\[\]$#', $this->returnType)) {
+                $this->returnAsArray = true;
                 $this->returnType = substr($this->returnType, 0, -2);
             }
         }
 
         return $this->returnType;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isReturnAsArray()
+    {
+        $this->getReturnType();
+        return $this->returnAsArray;
+    }
+
+    /**
+     * @return array|string
+     */
+    public function getParams()
+    {
+        return $this->params;
     }
 }

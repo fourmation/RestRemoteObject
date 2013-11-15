@@ -24,10 +24,12 @@ class HttpClient extends BaseHttpClient
         if ($request->getMethod() == 'POST' && preg_match('#users#', $uri->toString())) {
             $post = $this->getRequest()->getPost()->toArray();
             $user = new User();
+            $user->setId(1);
             $user->setName($post[0]['name']);
 
             $content = json_encode(array(
                 array(
+                    'id' => $user->getId(),
                     'name' => $user->getName(),
                 ),
             ));
@@ -36,10 +38,12 @@ class HttpClient extends BaseHttpClient
 
         else if (preg_match('#users\/\d$#', $uri->toString())) {
             $user = new User();
+            $user->setId(1);
             $user->setName('Vincent');
 
             $content = json_encode(array(
                 array(
+                    'id' => $user->getId(),
                     'name' => $user->getName(),
                 ),
             ));
@@ -59,6 +63,19 @@ class HttpClient extends BaseHttpClient
                 ),
                 array(
                     'name' => $user2->getName(),
+                ),
+            ));
+            $response->setContent($content);
+        }
+
+        else if (preg_match('#locations#', $uri->toString())) {
+            $location1 = new Location();
+            $location1->setId(1);
+            $location1->setAddress('Pitt Street');
+
+            $content = json_encode(array(
+                array(
+                    'address' => $location1->getAddress(),
                 ),
             ));
             $response->setContent($content);

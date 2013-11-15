@@ -7,7 +7,7 @@ use RestRemoteObject\Client\Rest as RestClient;
 use RestRemoteObject\Client\Rest\Versioning\HeaderVersioningStrategy;
 use RestRemoteObject\Client\Rest\Authentication\TokenAuthenticationStrategy;
 use RestRemoteObject\Client\Rest\Format\HeaderFormatStrategy;
-use RestRemoteObject\Client\Rest\ResponseHandler\GhostObjectResponseHandler;
+use RestRemoteObject\Client\Rest\ResponseHandler\Builder\GhostObjectBuilder;
 
 use RestRemoteObjectTestAsset\Models\Location;
 use RestRemoteObjectTestAsset\Options\PaginationOptions;
@@ -97,10 +97,10 @@ class FunctionalTest extends PHPUnit_Framework_TestCase
 
     public function testCanPilotResultObject()
     {
-        $this->restClient->setResponseHandler(new GhostObjectResponseHandler($this->restClient));
+        $this->restClient->getResponseHandler()->setResponseBuilder(new GhostObjectBuilder($this->restClient));
         $user = $this->remote->get(1);
         $locations = $user->getLocations();
 
-        $this->assertEquals(2, count($locations));
+        $this->assertEquals(1, count($locations));
     }
 }

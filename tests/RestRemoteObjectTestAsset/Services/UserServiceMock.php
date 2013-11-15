@@ -11,8 +11,8 @@ use RestRemoteObjectTestAsset\Models\Location;
 class UserServiceMock implements UserServiceInterface
 {
     /**
-     * @http GET
-     * @uri /users/%id
+     * @rest\http GET
+     * @rest\uri /users/%id
      * @param int $id
      * @return \RestRemoteObjectTestAsset\Models\User
      */
@@ -22,11 +22,11 @@ class UserServiceMock implements UserServiceInterface
     }
 
     /**
-     * @http GET
-     * @uri /users?location=%location&offset=%offset&limit=%limit
+     * @rest\http GET
+     * @rest\uri /users?location=%location&offset=%offset&limit=%limit
      * @param Location $location
      * @param PaginationOptions $pagination
-     * @return \RestRemoteObjectTestAsset\Models\User
+     * @return \RestRemoteObjectTestAsset\Models\User[]
      */
     public function getUsersFromLocation(Location $location, PaginationOptions $pagination)
     {
@@ -34,8 +34,8 @@ class UserServiceMock implements UserServiceInterface
     }
 
     /**
-     * @http POST
-     * @uri /users
+     * @rest\http POST
+     * @rest\uri /users
      * @param array $data
      * @return \RestRemoteObjectTestAsset\Models\User
      */
