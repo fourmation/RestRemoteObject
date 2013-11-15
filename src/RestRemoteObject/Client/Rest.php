@@ -58,7 +58,7 @@ class Rest implements ClientInterface
      */
     public function __construct($uri, FormatStrategyInterface $formatStrategy)
     {
-        $this->uri = $uri;
+        $this->uri = trim($uri, '\/');
         $this->formatStrategy = $formatStrategy;
     }
 
@@ -116,7 +116,6 @@ class Rest implements ClientInterface
         foreach ($this->features as $feature) {
             $feature->apply($request);
         }
-
         $response = $client->send();
 
         $responseHandler = $this->getResponseHandler();

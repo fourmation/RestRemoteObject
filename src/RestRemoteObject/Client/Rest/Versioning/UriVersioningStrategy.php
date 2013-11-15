@@ -12,11 +12,19 @@ class UriVersioningStrategy implements VersioningStrategyInterface
     protected $version;
 
     /**
+     * @var string $baseUrl
+     */
+    protected $baseUrl;
+
+    /**
      * @param string $version
      */
-    public function __construct($version)
+    public function __construct($version, $baseUrl = null)
     {
         $this->version = $version;
+        if ($baseUrl) {
+            $this->baseUrl = '/' . trim($baseUrl, '\/');
+        }
     }
 
     /**
@@ -27,6 +35,12 @@ class UriVersioningStrategy implements VersioningStrategyInterface
     public function version(Request $request)
     {
         $uri = $request->getUri();
-        $uri->setPath('/' . $this->version . $uri->getPath());
+        if (!$this->baseUrl) {
+            $uri->setPath('/' . $this->version . $uri->getPath());
+        } else {
+            $path = $uri->getPath();
+            $path = str_replace($this->baseUrl, $this->baseUrl . '/' . $this->version, $path);
+            $uri->setPath($path);
+        }
     }
 }

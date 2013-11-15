@@ -18,6 +18,16 @@ class HttpAuthenticationStrategy implements AuthenticationStrategyInterface
      */
     protected $password;
 
+    public function __construct($user = null, $password = null)
+    {
+        if ($user) {
+            $this->setUser($user);
+        }
+        if ($password) {
+            $this->setPassword($password);
+        }
+    }
+
     /**
      * Authenticate the request
      * @param Request $request
