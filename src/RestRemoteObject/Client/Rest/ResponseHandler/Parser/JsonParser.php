@@ -17,13 +17,13 @@ class JsonParser implements ParserInterface
      */
     public function parse($content)
     {
-        $content = json_decode($content);
+        $content = json_decode($content, true);
         $key = $this->getKey();
         if ($key) {
-            $content = $content->{$key};
+            $content = $content[$key];
         }
 
-        return (array)$content;
+        return $content;
     }
 
     /**
