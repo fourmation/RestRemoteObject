@@ -101,11 +101,6 @@ class Rest implements ClientInterface
 
         $request = $client->getRequest();
 
-        $authenticationStrategy = $this->getAuthenticationStrategy();
-        if ($authenticationStrategy) {
-            $authenticationStrategy->authenticate($request);
-        }
-
         $versioningStrategy = $this->getVersioningStrategy();
         if ($versioningStrategy) {
             $versioningStrategy->version($request);
@@ -116,6 +111,13 @@ class Rest implements ClientInterface
         foreach ($this->features as $feature) {
             $feature->apply($request);
         }
+
+        $authenticationStrategy = $this->getAuthenticationStrategy();
+        if ($authenticationStrategy) {
+            $authenticationStrategy->authenticate($request);
+            $client->setUri($request->getUri()); // bugfix -- refresh auth params
+        }
+
         $response = $client->send();
 
         $responseHandler = $this->getResponseHandler();
