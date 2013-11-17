@@ -2,16 +2,16 @@
 
 namespace RestRemoteObject\Client\Rest\Format;
 
-use Zend\Http\Request;
+use RestRemoteObject\Client\Rest\Context;
 
 class HeaderFormatStrategy extends AbstractFormatStrategy
 {
     /**
      * Format apply
-     * @param Request $request
+     * @param Context $context
      */
-    public function format(Request $request)
+    public function format(Context $context)
     {
-        $request->getHeaders()->addHeaderLine('Content-type: application/' . $this->format);
+        $context->getRequest()->getHeaders()->addHeaderLine('Content-type: application/' . $this->getFormat()->toString());
     }
 }

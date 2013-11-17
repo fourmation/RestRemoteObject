@@ -4,7 +4,7 @@ namespace RestRemoteObject\Client\Rest\Authentication;
 
 use RestRemoteObject\Client\Rest\Exception\MissingAuthenticationParameterException;
 
-use Zend\Http\Request;
+use RestRemoteObject\Client\Rest\Context;
 
 class HttpAuthenticationStrategy implements AuthenticationStrategyInterface
 {
@@ -30,15 +30,15 @@ class HttpAuthenticationStrategy implements AuthenticationStrategyInterface
 
     /**
      * Authenticate the request
-     * @param Request $request
+     * @param Context $context
      * @return void
      */
-    public function authenticate(Request $request)
+    public function authenticate(Context $context)
     {
         $user = $this->getUser();
         $password = $this->getPassword();
 
-        $uri = $request->getUri();
+        $uri = $context->getRequest()->getUri();
         $uri->setUser($user);
         $uri->setPassword($password);
     }

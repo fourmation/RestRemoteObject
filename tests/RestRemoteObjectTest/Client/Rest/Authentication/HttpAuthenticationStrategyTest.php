@@ -2,6 +2,7 @@
 
 namespace RestRemoteObjectTest\Client\Rest\Authentication;
 
+use RestRemoteObject\Client\Rest\Context;
 use RestRemoteObject\Client\Rest\Authentication\HttpAuthenticationStrategy;
 
 use PHPUnit_Framework_TestCase;
@@ -24,7 +25,9 @@ class HttpAuthenticationStrategyTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(null, $password);
         $this->assertEquals(null, $user);
 
-        $strategy->authenticate($request);
+        $context = new Context();
+        $context->setRequest($request);
+        $strategy->authenticate($context);
 
         $password = $request->getUri()->getPassword();
         $user = $request->getUri()->getUser();
@@ -39,7 +42,10 @@ class HttpAuthenticationStrategyTest extends PHPUnit_Framework_TestCase
 
         $request = new Request();
 
+        $context = new Context();
+        $context->setRequest($request);
+
         $this->setExpectedException('RestRemoteObject\Client\Rest\Exception\MissingAuthenticationParameterException');
-        $strategy->authenticate($request);
+        $strategy->authenticate($context);
     }
 }

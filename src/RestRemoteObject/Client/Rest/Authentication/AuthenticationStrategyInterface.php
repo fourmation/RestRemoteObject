@@ -2,14 +2,14 @@
 
 namespace RestRemoteObject\Client\Rest\Authentication;
 
-use Zend\Http\Request;
+use RestRemoteObject\Client\Rest\Context;
 
 interface AuthenticationStrategyInterface
 {
     /**
      * Authenticate the request
-     * @param Request $request
+     * @param Context $context
      * @return void
      */
-    public function authenticate(Request $request);
+    public function authenticate(Context $context);
 }

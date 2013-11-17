@@ -2,7 +2,7 @@
 
 namespace RestRemoteObject\Client\Rest\Versioning;
 
-use Zend\Http\Request;
+use RestRemoteObject\Client\Rest\Context;
 
 class HeaderVersioningStrategy implements VersioningStrategyInterface
 {
@@ -28,11 +28,11 @@ class HeaderVersioningStrategy implements VersioningStrategyInterface
 
     /**
      * Version the request
-     * @param Request $request
+     * @param Context $context
      * @return void
      */
-    public function version(Request $request)
+    public function version(Context $context)
     {
-        $request->getHeaders()->addHeaderLine($this->header . ': ' . $this->version);
+        $context->getRequest()->getHeaders()->addHeaderLine($this->header . ': ' . $this->version);
     }
 }

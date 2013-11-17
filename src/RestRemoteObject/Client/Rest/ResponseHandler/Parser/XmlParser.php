@@ -2,6 +2,8 @@
 
 namespace RestRemoteObject\Client\Rest\ResponseHandler\Parser;
 
+use RestRemoteObject\Client\Rest\Context;
+
 class XmlParser implements ParserInterface
 {
     /**
@@ -13,9 +15,10 @@ class XmlParser implements ParserInterface
      * Parse response content
      *
      * @param $content
+     * @param Context $context
      * @return array
      */
-    public function parse($content)
+    public function parse($content, Context $context)
     {
         $content = json_decode(json_encode(simplexml_load_string($content)), true);
         $key = $this->getKey();

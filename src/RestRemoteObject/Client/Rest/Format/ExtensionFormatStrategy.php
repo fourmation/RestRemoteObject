@@ -2,17 +2,27 @@
 
 namespace RestRemoteObject\Client\Rest\Format;
 
-use Zend\Http\Request;
+use RestRemoteObject\Client\Rest\Context;
 
-class ExtensionFormatStrategy extends  AbstractFormatStrategy
+class ExtensionFormatStrategy extends AbstractFormatStrategy
 {
     /**
      * Format apply
-     * @param Request $request
+     * @param Context $context
      */
-    public function format(Request $request)
+    public function format(Context $context)
     {
-        $uri = $request->getUri();
-        $uri->setPath($uri->getPath() . '.' . $this->format);
+        $uri = $context->getRequest()->getUri();
+        $uri->setPath($uri->getPath() . '.' . $this->getFormat()->toString());
+    }
+
+    /**
+     * Set Format
+     *
+     * @param Format $format
+     */
+    public function setFormat(Format $format)
+    {
+        $this->format = $format;
     }
 }

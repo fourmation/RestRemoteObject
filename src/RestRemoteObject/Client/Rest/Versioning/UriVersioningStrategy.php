@@ -2,7 +2,7 @@
 
 namespace RestRemoteObject\Client\Rest\Versioning;
 
-use Zend\Http\Request;
+use RestRemoteObject\Client\Rest\Context;
 
 class UriVersioningStrategy implements VersioningStrategyInterface
 {
@@ -18,6 +18,7 @@ class UriVersioningStrategy implements VersioningStrategyInterface
 
     /**
      * @param string $version
+     * @param null|string $baseUrl
      */
     public function __construct($version, $baseUrl = null)
     {
@@ -29,12 +30,12 @@ class UriVersioningStrategy implements VersioningStrategyInterface
 
     /**
      * Version the request
-     * @param Request $request
+     * @param Context $context
      * @return void
      */
-    public function version(Request $request)
+    public function version(Context $context)
     {
-        $uri = $request->getUri();
+        $uri = $context->getRequest()->getUri();
         if (!$this->baseUrl) {
             $uri->setPath('/' . $this->version . $uri->getPath());
         } else {

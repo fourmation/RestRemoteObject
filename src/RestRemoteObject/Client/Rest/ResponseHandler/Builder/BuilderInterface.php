@@ -1,15 +1,16 @@
 <?php
 
 namespace RestRemoteObject\Client\Rest\ResponseHandler\Builder;
-use RestRemoteObject\Client\Rest\ResourceDescriptor;
+use RestRemoteObject\Client\Rest\Context;
 
 interface BuilderInterface
 {
     /**
-     * Build response
+     * Build API response
      *
-     * @param $data
+     * @param array $data
+     * @param Context $context
      * @return array
      */
-    public function build(array $data, ResourceDescriptor $descriptor);
+    public function build(array $data, Context $context);
 }

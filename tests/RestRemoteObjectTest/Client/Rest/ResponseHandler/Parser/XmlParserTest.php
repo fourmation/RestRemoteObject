@@ -2,6 +2,7 @@
 
 namespace RestRemoteObjectTest\Client\Rest\ResponseHandler\Parser;
 
+use RestRemoteObject\Client\Rest\Context;
 use PHPUnit_Framework_TestCase;
 use RestRemoteObject\Client\Rest\ResponseHandler\Parser\XmlParser;
 
@@ -16,9 +17,10 @@ class XmlParserTest extends PHPUnit_Framework_TestCase
     </document>
 XML;
 
+        $context = new Context();
 
         $parser = new XmlParser();
-        $new = $parser->parse($data);
+        $new = $parser->parse($data, $context);
 
         $this->assertEquals(array('foo' => 'bar'), $new);
     }
@@ -34,9 +36,11 @@ XML;
     </document>
 XML;
 
+        $context = new Context();
+
         $parser = new XmlParser();
         $parser->setKey('baz');
-        $new = $parser->parse($data);
+        $new = $parser->parse($data, $context);
 
         $this->assertEquals(array('foo' => 'bar'), $new);
     }

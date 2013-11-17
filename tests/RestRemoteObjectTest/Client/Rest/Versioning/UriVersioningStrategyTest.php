@@ -2,6 +2,7 @@
 
 namespace RestRemoteObjectTest\Client\Rest\Authentication;
 
+use RestRemoteObject\Client\Rest\Context;
 use RestRemoteObject\Client\Rest\Versioning\UriVersioningStrategy;
 
 use PHPUnit_Framework_TestCase;
@@ -18,7 +19,10 @@ class UriVersioningStrategyTest extends PHPUnit_Framework_TestCase
         $request = new Request();
         $request->setUri('http://localhost/resource/1?user=1');
 
-        $strategy->version($request);
+        $context = new Context();
+        $context->setRequest($request);
+
+        $strategy->version($context);
 
         $this->assertEquals('http://localhost/v3/resource/1?user=1', $request->getUri()->toString());
     }

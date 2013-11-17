@@ -2,9 +2,8 @@
 
 namespace RestRemoteObject\Client\Rest\Authentication;
 
+use RestRemoteObject\Client\Rest\Context;
 use RestRemoteObject\Client\Rest\Exception\MissingAuthenticationParameterException;
-
-use Zend\Http\Request;
 
 class TokenAuthenticationStrategy implements AuthenticationStrategyInterface
 {
@@ -25,14 +24,14 @@ class TokenAuthenticationStrategy implements AuthenticationStrategyInterface
 
     /**
      * Authenticate the request
-     * @param Request $request
+     * @param Context $context
      * @return void
      */
-    public function authenticate(Request $request)
+    public function authenticate(Context $context)
     {
         $token = $this->getToken();
 
-        $uri = $request->getUri();
+        $uri = $context->getRequest()->getUri();
         $query = $uri->getQueryAsArray();
 
         $query['token'] = $token;

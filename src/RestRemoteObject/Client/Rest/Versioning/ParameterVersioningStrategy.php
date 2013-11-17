@@ -2,7 +2,7 @@
 
 namespace RestRemoteObject\Client\Rest\Versioning;
 
-use Zend\Http\Request;
+use RestRemoteObject\Client\Rest\Context;
 
 class ParameterVersioningStrategy implements VersioningStrategyInterface
 {
@@ -21,12 +21,12 @@ class ParameterVersioningStrategy implements VersioningStrategyInterface
 
     /**
      * Version the request
-     * @param Request $request
+     * @param Context $context
      * @return void
      */
-    public function version(Request $request)
+    public function version(Context $context)
     {
-        $uri = $request->getUri();
+        $uri = $context->getRequest()->getUri();
         $query = $uri->getQueryAsArray();
 
         $query['v'] = $this->version;

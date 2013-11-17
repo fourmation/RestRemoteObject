@@ -5,7 +5,7 @@ namespace RestRemoteObject\Client\Rest\Authentication;
 use RestRemoteObject\Client\Rest\Exception\MissingAuthenticationParameterException;
 
 use Zend\Crypt\Hmac;
-use Zend\Http\Request;
+use RestRemoteObject\Client\Rest\Context;
 
 class QueryAuthenticationStrategy implements AuthenticationStrategyInterface
 {
@@ -21,15 +21,15 @@ class QueryAuthenticationStrategy implements AuthenticationStrategyInterface
 
     /**
      * Authenticate the request
-     * @param Request $request
+     * @param Context $context
      * @return void
      */
-    public function authenticate(Request $request)
+    public function authenticate(Context $context)
     {
         $privateKey = $this->getPrivateKey();
         $publicKey = $this->getPublicKey();
 
-        $uri = $request->getUri();
+        $uri = $context->getRequest()->getUri();
         $query = $uri->getQueryAsArray();
 
         $signature = Hmac::compute($privateKey, 'sha1', $uri->getPath() . '?' . $uri->getQuery());

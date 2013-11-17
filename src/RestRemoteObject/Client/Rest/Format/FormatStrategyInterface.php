@@ -2,16 +2,13 @@
 
 namespace RestRemoteObject\Client\Rest\Format;
 
-use Zend\Http\Request;
+use RestRemoteObject\Client\Rest\Context;
 
 interface FormatStrategyInterface
 {
-    CONST JSON = 'json';
-    CONST XML  = 'xml';
-
     /**
      * Format apply
-     * @param Request $request
+     * @param Context $context
      */
-    public function format(Request $request);
+    public function format(Context $context);
 }

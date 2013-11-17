@@ -2,6 +2,7 @@
 
 namespace RestRemoteObjectTest\Client\Rest\Authentication;
 
+use RestRemoteObject\Client\Rest\Context;
 use RestRemoteObject\Client\Rest\Authentication\TokenAuthenticationStrategy;
 
 use PHPUnit_Framework_TestCase;
@@ -19,7 +20,10 @@ class TokenAuthenticationStrategyTest extends PHPUnit_Framework_TestCase
         $request = new Request();
         $request->setUri('http://localhost/resource/1');
 
-        $strategy->authenticate($request);
+        $context = new Context();
+        $context->setRequest($request);
+
+        $strategy->authenticate($context);
 
         $this->assertEquals('http://localhost/resource/1?token=12345689', $request->getUri()->toString());
     }
@@ -34,7 +38,10 @@ class TokenAuthenticationStrategyTest extends PHPUnit_Framework_TestCase
         $request = new Request();
         $request->setUri('http://localhost/resource/1?foo=bar');
 
-        $strategy->authenticate($request);
+        $context = new Context();
+        $context->setRequest($request);
+
+        $strategy->authenticate($context);
 
         $this->assertEquals('http://localhost/resource/1?foo=bar&token=12345689', $request->getUri()->toString());
     }
@@ -47,6 +54,9 @@ class TokenAuthenticationStrategyTest extends PHPUnit_Framework_TestCase
         $request->setUri('http://localhost/resource/1?foo=bar');
 
         $this->setExpectedException('RestRemoteObject\Client\Rest\Exception\MissingAuthenticationParameterException');
-        $strategy->authenticate($request);
+
+        $context = new Context();
+        $context->setRequest($request);
+        $strategy->authenticate($context);
     }
 }

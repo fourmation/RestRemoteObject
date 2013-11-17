@@ -1,7 +1,7 @@
 <?php
 
 namespace RestRemoteObject\Client\Rest\ResponseHandler\Builder;
-use RestRemoteObject\Client\Rest\ResourceDescriptor;
+use RestRemoteObject\Client\Rest\Context;
 
 use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
@@ -11,11 +11,12 @@ class DefaultBuilder implements BuilderInterface
      * Build response
      *
      * @param array $data
-     * @param ResourceDescriptor $descriptor
+     * @param Context $context
      * @return mixed|array
      */
-    public function build(array $data, ResourceDescriptor $descriptor)
+    public function build(array $data, Context $context)
     {
+        $descriptor = $context->getResourceDescriptor();
         $returnType = $descriptor->getReturnType();
         if (!$returnType) {
             return;

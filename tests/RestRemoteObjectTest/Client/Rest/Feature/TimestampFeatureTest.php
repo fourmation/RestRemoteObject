@@ -2,6 +2,7 @@
 
 namespace RestRemoteObjectTest\Client\Rest\Feature;
 
+use RestRemoteObject\Client\Rest\Context;
 use RestRemoteObject\Client\Rest\Feature\TimestampFeature;
 
 use PHPUnit_Framework_TestCase;
@@ -17,7 +18,10 @@ class TimestampFeatureTest extends PHPUnit_Framework_TestCase
         $request = new Request();
         $request->setUri('http://localhost/resource/1');
 
-        $strategy->apply($request);
+        $context = new Context();
+        $context->setRequest($request);
+
+        $strategy->apply($context);
 
         $this->assertEquals('http://localhost/resource/1?t=' . time(), $request->getUri()->toString());
     }

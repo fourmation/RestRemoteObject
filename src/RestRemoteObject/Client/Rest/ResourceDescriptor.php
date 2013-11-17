@@ -194,7 +194,17 @@ class ResourceDescriptor
     }
 
     /**
-     * @return array|string
+     * Get the service method name, eg MyInterface.myMethod
+     *
+     * @return string
+     */
+    public function getMethodName()
+    {
+        return $this->method;
+    }
+
+    /**
+     * @return array
      */
     public function getParams()
     {

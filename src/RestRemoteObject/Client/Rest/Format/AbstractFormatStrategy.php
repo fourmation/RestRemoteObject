@@ -10,28 +10,32 @@ abstract class AbstractFormatStrategy implements FormatStrategyInterface
     protected $format;
 
     /**
-     * @param string $format
+     * @param Format $format
      */
-    public function __construct($format)
+    public function __construct(Format $format = null)
+    {
+        if ($format) {
+            $this->setFormat($format);
+        }
+    }
+
+    /**
+     * Get format
+     *
+     * @return Format
+     */
+    public function getFormat()
+    {
+        return $this->format;
+    }
+
+    /**
+     * Set Format
+     *
+     * @param Format $format
+     */
+    public function setFormat(Format $format)
     {
         $this->format = $format;
-    }
-
-    /**
-     * Format os JSON
-     * @return bool
-     */
-    public function isJson()
-    {
-        return $this->format == FormatStrategyInterface::JSON;
-    }
-
-    /**
-     * Format is XML
-     * @return bool
-     */
-    public function isXml()
-    {
-        return $this->format == FormatStrategyInterface::XML;
     }
 }

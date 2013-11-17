@@ -2,6 +2,7 @@
 
 namespace RestRemoteObjectTest\Client\Rest\Authentication;
 
+use RestRemoteObject\Client\Rest\Context;
 use RestRemoteObject\Client\Rest\Authentication\QueryAuthenticationStrategy;
 
 use PHPUnit_Framework_TestCase;
@@ -21,7 +22,10 @@ class QueryAuthenticationStrategyTest extends PHPUnit_Framework_TestCase
         $request = new Request();
         $request->setUri('http://localhost/resource/1?user=1');
 
-        $strategy->authenticate($request);
+        $context = new Context();
+        $context->setRequest($request);
+
+        $strategy->authenticate($context);
 
         $query = $request->getUri()->getQueryAsArray();
         $signature = $query['signature'];
@@ -38,6 +42,10 @@ class QueryAuthenticationStrategyTest extends PHPUnit_Framework_TestCase
         $request->setUri('http://localhost/resource/1?foo=bar');
 
         $this->setExpectedException('RestRemoteObject\Client\Rest\Exception\MissingAuthenticationParameterException');
-        $strategy->authenticate($request);
+
+        $context = new Context();
+        $context->setRequest($request);
+
+        $strategy->authenticate($context);
     }
 }

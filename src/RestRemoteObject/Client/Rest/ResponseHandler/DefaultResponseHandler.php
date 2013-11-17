@@ -2,8 +2,7 @@
 
 namespace RestRemoteObject\Client\Rest\ResponseHandler;
 
-use RestRemoteObject\Client\Rest\ResourceDescriptor;
-use RestRemoteObject\Client\Rest\Format\FormatStrategyInterface;
+use RestRemoteObject\Client\Rest\Context;
 use RestRemoteObject\Client\Rest\ResponseHandler\Parser\JsonParser;
 use RestRemoteObject\Client\Rest\ResponseHandler\Parser\ParserInterface;
 use RestRemoteObject\Client\Rest\ResponseHandler\Builder\BuilderInterface;
@@ -25,17 +24,17 @@ class DefaultResponseHandler implements ResponseHandlerInterface
     protected $builder;
 
     /**
-     * @param FormatStrategyInterface $format
-     * @param ResourceDescriptor $descriptor
+     * @param Context $context
      * @param Response $response
      * @return array
      * @throws \RuntimeException
      */
-    public function buildResponse(FormatStrategyInterface $format, ResourceDescriptor $descriptor, Response $response)
+    public function buildResponse(Context $context, Response $response)
     {
         $content = $response->getBody();
         $responseParser = $this->getResponseParser();
         if (null === $responseParser) {
+            $format = $context->getFormat();
             if ($format->isJson()) {
                 $responseParser = new JsonParser();
             } else if ($format->isXml()) {
@@ -45,10 +44,10 @@ class DefaultResponseHandler implements ResponseHandlerInterface
             }
         }
 
-        $content = $responseParser->parse($content);
+        $content = $responseParser->parse($content, $context);
 
         $builder = $this->getResponseBuilder();
-        return $builder->build($content, $descriptor);
+        return $builder->build($content, $context);
     }
 
     /**

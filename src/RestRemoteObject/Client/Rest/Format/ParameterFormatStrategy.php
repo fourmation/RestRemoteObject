@@ -2,20 +2,20 @@
 
 namespace RestRemoteObject\Client\Rest\Format;
 
-use Zend\Http\Request;
+use RestRemoteObject\Client\Rest\Context;
 
 class ParameterFormatStrategy extends  AbstractFormatStrategy
 {
     /**
      * Format apply
-     * @param Request $request
+     * @param Context $context
      */
-    public function format(Request $request)
+    public function format(Context $context)
     {
-        $uri = $request->getUri();
+        $uri = $context->getRequest()->getUri();
         $query = $uri->getQueryAsArray();
 
-        $query['f'] = $this->format;
+        $query['f'] = $this->getFormat()->toString();
         $uri->setQuery($query);
     }
 }

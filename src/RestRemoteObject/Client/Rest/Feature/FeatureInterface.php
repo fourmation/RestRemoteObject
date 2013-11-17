@@ -2,12 +2,12 @@
 
 namespace RestRemoteObject\Client\Rest\Feature;
 
-use Zend\Http\Request;
+use RestRemoteObject\Client\Rest\Context;
 
 interface FeatureInterface
 {
     /**
-     * @param Request $request
+     * @param Context $context
      */
-    public function apply(Request $request);
+    public function apply(Context $context);
 }

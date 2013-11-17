@@ -2,16 +2,16 @@
 
 namespace RestRemoteObject\Client\Rest\Feature;
 
-use Zend\Http\Request;
+use RestRemoteObject\Client\Rest\Context;
 
 class TimestampFeature implements FeatureInterface
 {
     /**
-     * @param Request $request
+     * @param Context $context
      */
-    public function apply(Request $request)
+    public function apply(Context $context)
     {
-        $uri = $request->getUri();
+        $uri = $context->getRequest()->getUri();
         $query = $uri->getQueryAsArray();
 
         $query['t'] = time();

@@ -2,9 +2,12 @@
 
 namespace RestRemoteObject\Client;
 
+use RestRemoteObject\Client\Rest\Context;
 use RestRemoteObject\Client\Rest\ResourceDescriptor;
 use RestRemoteObject\Client\Rest\ResponseHandler;
+use RestRemoteObject\Client\Rest\ArgumentBuilder\ArgumentBuilderInterface;
 use RestRemoteObject\Client\Rest\Authentication\AuthenticationStrategyInterface;
+use RestRemoteObject\Client\Rest\Format\Format;
 use RestRemoteObject\Client\Rest\Format\FormatStrategyInterface;
 use RestRemoteObject\Client\Rest\Versioning\VersioningStrategyInterface;
 use RestRemoteObject\Client\Rest\ResponseHandler\ResponseHandlerInterface;
@@ -18,17 +21,22 @@ use Zend\Server\Client as ClientInterface;
 class Rest implements ClientInterface
 {
     /**
-     * @var string $format
-     */
-    protected $format;
-
-    /**
      * @var HttpClient $client
      */
     protected $client;
 
     /**
-     * @var AuthenticationStrategyInterface $formatStrategy
+     * @var ArgumentBuilderInterface $argumentBuilder
+     */
+    protected $argumentBuilder;
+
+    /**
+     * @var Format $format
+     */
+    protected $format;
+
+    /**
+     * @var FormatStrategyInterface $formatStrategy
      */
     protected $formatStrategy;
 
@@ -54,12 +62,12 @@ class Rest implements ClientInterface
 
     /**
      * @param string $uri
-     * @param FormatStrategyInterface $formatStrategy
+     * @param Format $format
      */
-    public function __construct($uri, FormatStrategyInterface $formatStrategy)
+    public function __construct($uri, Format $format)
     {
         $this->uri = trim($uri, '\/');
-        $this->formatStrategy = $formatStrategy;
+        $this->format = $format;
     }
 
     /**
@@ -81,12 +89,25 @@ class Rest implements ClientInterface
      */
     public function callResource(ResourceDescriptor $descriptor)
     {
-        $params = $descriptor->getParams();
         $client = $this->getHttpClient();
         $client->setUri($this->uri . $descriptor->getApiResource());
 
+        $request = $client->getRequest();
+
+        $context = new Context();
+        $context->setRequest($request);
+        $context->setResourceDescriptor($descriptor);
+        $context->setFormat($this->format);
+
         $httpMethod = $descriptor->getHttpMethod();
         $client->setMethod($httpMethod);
+
+        $params = $descriptor->getParams();
+
+        $argumentBuilder = $this->getArgumentBuilder();
+        if ($argumentBuilder) {
+            $params = $argumentBuilder->build($context);
+        }
 
         switch($httpMethod) {
             case 'GET' : break; // params already in the URI
@@ -99,29 +120,30 @@ class Rest implements ClientInterface
                 break;
         }
 
-        $request = $client->getRequest();
-
         $versioningStrategy = $this->getVersioningStrategy();
         if ($versioningStrategy) {
-            $versioningStrategy->version($request);
+            $versioningStrategy->version($context);
         }
 
-        $this->formatStrategy->format($request);
+        $formatStrategy = $this->getFormatStrategy();
+        if ($formatStrategy) {
+            $formatStrategy->format($context);
+        }
 
         foreach ($this->features as $feature) {
-            $feature->apply($request);
+            $feature->apply($context);
         }
 
         $authenticationStrategy = $this->getAuthenticationStrategy();
         if ($authenticationStrategy) {
-            $authenticationStrategy->authenticate($request);
+            $authenticationStrategy->authenticate($context);
             $client->setUri($request->getUri()); // bugfix -- refresh auth params
         }
 
         $response = $client->send();
 
         $responseHandler = $this->getResponseHandler();
-        return $responseHandler->buildResponse($this->formatStrategy, $descriptor, $response);
+        return $responseHandler->buildResponse($context, $response);
     }
 
     /**
@@ -143,6 +165,53 @@ class Rest implements ClientInterface
     public function setHttpClient(HttpClient $client)
     {
         $this->client = $client;
+
+        return $this;
+    }
+
+    /**
+     * Get the format strategy
+     *
+     * @return FormatStrategyInterface
+     */
+    public function getFormatStrategy()
+    {
+        return $this->formatStrategy;
+    }
+
+    /**
+     * Get the arguments builder
+     *
+     * @return ArgumentBuilderInterface
+     */
+    public function getArgumentBuilder()
+    {
+        return $this->argumentBuilder;
+    }
+
+    /**
+     * Set the arguments builder
+     *
+     * @param ArgumentBuilderInterface $argumentBuilder
+     * @return $this
+     */
+    public function setArgumentBuilder(ArgumentBuilderInterface $argumentBuilder)
+    {
+        $this->argumentBuilder = $argumentBuilder;
+
+        return $this;
+    }
+
+    /**
+     * Set the format strategy
+     *
+     * @param FormatStrategyInterface $formatStrategy
+     * @return FormatStrategyInterface
+     */
+    public function setFormatStrategy(FormatStrategyInterface $formatStrategy)
+    {
+        $formatStrategy->setFormat($this->format);
+        $this->formatStrategy = $formatStrategy;
 
         return $this;
     }

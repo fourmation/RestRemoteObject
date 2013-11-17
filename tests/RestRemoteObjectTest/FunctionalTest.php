@@ -6,6 +6,7 @@ use RestRemoteObject\Adapter\Rest as RestAdapter;
 use RestRemoteObject\Client\Rest as RestClient;
 use RestRemoteObject\Client\Rest\Versioning\HeaderVersioningStrategy;
 use RestRemoteObject\Client\Rest\Authentication\TokenAuthenticationStrategy;
+use RestRemoteObject\Client\Rest\Format\Format;
 use RestRemoteObject\Client\Rest\Format\HeaderFormatStrategy;
 use RestRemoteObject\Client\Rest\ResponseHandler\Builder\GhostObjectBuilder;
 
@@ -29,7 +30,8 @@ class FunctionalTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->restClient = new RestClient('http://my-company.com/rest', new HeaderFormatStrategy('json'));
+        $this->restClient = new RestClient('http://my-company.com/rest', new Format(Format::JSON));
+        $this->restClient->setFormatStrategy(new HeaderFormatStrategy());
         $this->restClient->setHttpClient($this->httpClient = new HttpClient());
 
         $factory = new RemoteObjectFactory(
