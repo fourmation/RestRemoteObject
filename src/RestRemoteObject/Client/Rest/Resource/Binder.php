@@ -9,7 +9,7 @@ class Binder
     /**
      * @var array
      */
-    protected $params;
+    protected $params = array();
 
     /**
      * @var object

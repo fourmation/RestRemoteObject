@@ -12,7 +12,7 @@ class BinderTest extends PHPUnit_Framework_TestCase
     {
         $binder = new Binder();
 
-        $this->assertEquals(null, $binder->getParams());
+        $this->assertEquals(array(), $binder->getParams());
         $this->assertEquals(null, $binder->getObject());
     }
 
@@ -30,7 +30,7 @@ class BinderTest extends PHPUnit_Framework_TestCase
 
         $binder = new Binder($obj);
 
-        $this->assertEquals(null, $binder->getParams());
+        $this->assertEquals(array(), $binder->getParams());
         $this->assertEquals($obj, $binder->getObject());
     }
 }

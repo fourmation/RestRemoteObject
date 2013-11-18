@@ -91,11 +91,19 @@ class Rest implements ClientInterface
         $client = $this->getHttpClient();
         $request = $client->getRequest();
 
+        // create context
         $context = new Context();
         $context->setRequest($request);
         $context->setResourceDescriptor($descriptor);
         $context->setResourceBinder($binder);
 
+        // add format to the context
+        $formatStrategy = $this->getFormatStrategy();
+        if ($formatStrategy) {
+            $context->setFormat($formatStrategy->getFormat());
+        }
+
+        // build arguments
         $className = $descriptor->getClassName();
         $builder = $this->getBuilder($className);
         if ($builder) {
@@ -107,14 +115,11 @@ class Rest implements ClientInterface
         $descriptor->bind($binder);
         $client->setUri($this->uri . $descriptor->getApiResource());
 
-        $formatStrategy = $this->getFormatStrategy();
-        if ($formatStrategy) {
-            $context->setFormat($formatStrategy->getFormat());
-        }
-
+        // set the http method
         $httpMethod = $descriptor->getHttpMethod();
         $client->setMethod($httpMethod);
 
+        // set the reauest params
         switch($httpMethod) {
             case 'DELETE':
             case 'GET' :
@@ -126,20 +131,24 @@ class Rest implements ClientInterface
                 break;
         }
 
+        // apply versioning strategy
         $versioningStrategy = $this->getVersioningStrategy();
         if ($versioningStrategy) {
             $versioningStrategy->version($context);
         }
 
+        // apply format strategy
         $formatStrategy = $this->getFormatStrategy();
         if ($formatStrategy) {
             $formatStrategy->format($context);
         }
 
+        // apply features
         foreach ($this->features as $feature) {
             $feature->apply($context);
         }
 
+        // apply auth strategy
         $authenticationStrategy = $this->getAuthenticationStrategy();
         if ($authenticationStrategy) {
             $authenticationStrategy->authenticate($context);
