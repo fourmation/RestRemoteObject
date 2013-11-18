@@ -86,6 +86,8 @@ class Rest implements ClientInterface
     {
         if (null === $binder) {
             $binder = new Binder();
+        } else {
+            $descriptor->bind($binder);
         }
 
         $client = $this->getHttpClient();

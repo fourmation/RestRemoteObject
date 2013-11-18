@@ -35,5 +35,6 @@ class DescriptorTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('GET', $descriptor->getHttpMethod());
         $this->assertEquals('/users?location=1&offset=0&limit=' . $rand, $descriptor->getApiResource());
         $this->assertEquals('\RestRemoteObjectTestAsset\Models\User', $descriptor->getReturnType());
+        $this->assertTrue($descriptor->isReturnAsArray());
     }
 }
