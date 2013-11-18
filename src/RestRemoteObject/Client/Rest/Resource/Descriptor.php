@@ -148,8 +148,8 @@ class Descriptor
      */
     public function isReturnAsArray()
     {
-        $returnType = $this->getReturnType();
-        return preg_match('#\[\]$#', $returnType);
+        $this->getReturnType();
+        return preg_match('#\[\]$#', $this->returnType);
     }
 
     /**
