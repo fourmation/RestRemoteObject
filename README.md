@@ -32,7 +32,7 @@ use RestRemoteObject\Client\Rest\Format\Format;
 use RestRemoteObject\Client\Rest\Format\HeaderFormatStrategy;
 
 $client = new RestClient('http://my-company.com/rest');
-$client->setFormatStrategy();
+$client->setFormatStrategy(new HeaderFormatStrategy(new Format(Format::JSON)));
 
 $factory = RemoteObjectFactory(
     new RestAdapter(
@@ -60,11 +60,13 @@ use ProxyManager\Factory\RemoteObjectFactory;
 use RestRemoteObject\Adapter\Rest as RestAdapter;
 use RestRemoteObject\Client\Rest as RestClient;
 use RestRemoteObject\Client\Rest\Format\Format;
+use RestRemoteObject\Client\Rest\Format\HeaderFormatStrategy;
 use RestRemoteObject\Client\Rest\Versioning\HeaderVersioningStrategy;
 
 $versioning = new HeaderVersioningStrategy('3.0');
 
 $client = new RestClient('http://my-company.com/rest');
+$client->setFormatStrategy(new HeaderFormatStrategy(new Format(Format::JSON)));
 $client->setVersioningStrategy($versioning);
 
 $factory = new RemoteObjectFactory(
@@ -96,12 +98,14 @@ use RestRemoteObject\Adapter\Rest as RestAdapter;
 use RestRemoteObject\Client\Rest as RestClient;
 use RestRemoteObject\Client\Rest\Authentication\QueryAuthenticationStrategy;
 use RestRemoteObject\Client\Rest\Format\Format;
+use RestRemoteObject\Client\Rest\Format\HeaderFormatStrategy;
 
 $queryAuth = new QueryAuthenticationStrategy();
 $queryAuth->setPublicKey('12345689');
 $queryAuth->setPrivateKey('qwerty');
 
 $client = new RestClient('http://my-company.com/rest');
+$client->setFormatStrategy(new HeaderFormatStrategy(new Format(Format::JSON)));
 $client->setAuthenticationStrategy($queryAuth);
 
 $factory = new RemoteObjectFactory(
@@ -128,12 +132,14 @@ use RestRemoteObject\Adapter\Rest as RestAdapter;
 use RestRemoteObject\Client\Rest as RestClient;
 use RestRemoteObject\Client\Rest\Feature\Timestamp;
 use RestRemoteObject\Client\Rest\Format\Format;
+use RestRemoteObject\Client\Rest\Format\HeaderFormatStrategy;
 
 $queryAuth = new QueryAuthenticationStrategy();
 $queryAuth->setPublicKey('12345689');
 $queryAuth->setPrivateKey('qwerty');
 
 $client = new RestClient('http://my-company.com/rest');
+$client->setFormatStrategy(new HeaderFormatStrategy(new Format(Format::JSON)));
 $client->addFeature(new TimestampFeature());
 
 $factory = new RemoteObjectFactory(
@@ -175,8 +181,11 @@ use ProxyManager\Factory\RemoteObjectFactory;
 use RestRemoteObject\Adapter\Rest as RestAdapter;
 use RestRemoteObject\Client\Rest as RestClient;
 use RestRemoteObject\Client\Rest\Format\Format;
+use RestRemoteObject\Client\Rest\Format\HeaderFormatStrategy;
 
 $client = new RestClient('http://my-company.com/rest');
+$client->setFormatStrategy(new HeaderFormatStrategy(new Format(Format::JSON)));
+
 $responseHandler = $client->getResponseHandler();
 $responseHandler->getResponseParser(new MyParser()); // create your own logic here
 
@@ -209,8 +218,11 @@ use ProxyManager\Factory\RemoteObjectFactory;
 use RestRemoteObject\Adapter\Rest as RestAdapter;
 use RestRemoteObject\Client\Rest as RestClient;
 use RestRemoteObject\Client\Rest\Format\Format;
+use RestRemoteObject\Client\Rest\Format\HeaderFormatStrategy;
 
 $client = new RestClient('http://my-company.com/rest');
+$client->setFormatStrategy(new HeaderFormatStrategy(new Format(Format::JSON)));
+
 $responseHandler = $client->getResponseHandler();
 $responseHandler->setResponseBuilder(new GhostObjectBuilder($this->restClient));
 

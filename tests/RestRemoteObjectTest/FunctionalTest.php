@@ -30,8 +30,8 @@ class FunctionalTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->restClient = new RestClient('http://my-company.com/rest', new Format(Format::JSON));
-        $this->restClient->setFormatStrategy(new HeaderFormatStrategy());
+        $this->restClient = new RestClient('http://my-company.com/rest');
+        $this->restClient->setFormatStrategy(new HeaderFormatStrategy(new Format(Format::JSON)));
         $this->restClient->setHttpClient($this->httpClient = new HttpClient());
 
         $factory = new RemoteObjectFactory(
