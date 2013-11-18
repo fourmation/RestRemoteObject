@@ -31,11 +31,6 @@ class Rest implements ClientInterface
     protected $argumentBuilder;
 
     /**
-     * @var Format $format
-     */
-    protected $format;
-
-    /**
      * @var FormatStrategyInterface $formatStrategy
      */
     protected $formatStrategy;
@@ -62,12 +57,10 @@ class Rest implements ClientInterface
 
     /**
      * @param string $uri
-     * @param Format $format
      */
-    public function __construct($uri, Format $format)
+    public function __construct($uri)
     {
         $this->uri = trim($uri, '\/');
-        $this->format = $format;
     }
 
     /**
@@ -97,7 +90,11 @@ class Rest implements ClientInterface
         $context = new Context();
         $context->setRequest($request);
         $context->setResourceDescriptor($descriptor);
-        $context->setFormat($this->format);
+
+        $formatStrategy = $this->getFormatStrategy();
+        if ($formatStrategy) {
+            $context->setFormat($formatStrategy->getFormat());
+        }
 
         $httpMethod = $descriptor->getHttpMethod();
         $client->setMethod($httpMethod);
@@ -208,7 +205,6 @@ class Rest implements ClientInterface
      */
     public function setFormatStrategy(FormatStrategyInterface $formatStrategy)
     {
-        $formatStrategy->setFormat($this->format);
         $this->formatStrategy = $formatStrategy;
 
         return $this;

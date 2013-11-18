@@ -15,14 +15,4 @@ class ExtensionFormatStrategy extends AbstractFormatStrategy
         $uri = $context->getRequest()->getUri();
         $uri->setPath($uri->getPath() . '.' . $this->getFormat()->toString());
     }
-
-    /**
-     * Set Format
-     *
-     * @param Format $format
-     */
-    public function setFormat(Format $format)
-    {
-        $this->format = $format;
-    }
 }
