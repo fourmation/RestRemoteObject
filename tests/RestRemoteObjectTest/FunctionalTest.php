@@ -10,6 +10,7 @@ use RestRemoteObject\Client\Rest\Format\Format;
 use RestRemoteObject\Client\Rest\Format\HeaderFormatStrategy;
 use RestRemoteObject\Client\Rest\ResponseHandler\Builder\GhostObjectBuilder;
 
+use RestRemoteObjectTestAsset\Builder\UserBuilder;
 use RestRemoteObjectTestAsset\Models\Location;
 use RestRemoteObjectTestAsset\Options\PaginationOptions;
 use RestRemoteObjectMock\HttpClient;
@@ -88,6 +89,15 @@ class FunctionalTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("GET http://my-company.com/rest/users/1?token=qwerty HTTP/1.1\r\nContent-type: application/json", trim($lastRequest,  "\r\n"));
     }
 
+    public function testCanAddBuilder()
+    {
+        $this->restClient->addBuilder(new UserBuilder());
+        $this->remote->get(1);
+
+        $lastRequest = $this->httpClient->getLastRawRequest();
+        $this->assertEquals("GET http://my-company.com/rest/users/2" . " HTTP/1.1\r\nContent-type: application/json", trim($lastRequest,  "\r\n"));
+    }
+
     public function testCanAddTimestampFeature()
     {
         $this->restClient->addFeature(new RestClient\Feature\TimestampFeature());
@@ -96,7 +106,7 @@ class FunctionalTest extends PHPUnit_Framework_TestCase
         $lastRequest = $this->httpClient->getLastRawRequest();
         $this->assertEquals("GET http://my-company.com/rest/users/1?t=" . time() . " HTTP/1.1\r\nContent-type: application/json", trim($lastRequest,  "\r\n"));
     }
-
+    /*
     public function testCanPilotResultObject()
     {
         $responseHandler = $this->restClient->getResponseHandler();
@@ -106,4 +116,5 @@ class FunctionalTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(1, count($locations));
     }
+    */
 }

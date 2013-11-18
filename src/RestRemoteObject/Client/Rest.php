@@ -6,7 +6,7 @@ use RestRemoteObject\Client\Rest\Context;
 use RestRemoteObject\Client\Rest\Resource\Binder;
 use RestRemoteObject\Client\Rest\Resource\Descriptor;
 use RestRemoteObject\Client\Rest\ResponseHandler;
-use RestRemoteObject\Client\Rest\ArgumentBuilder\ArgumentBuilderInterface;
+use RestRemoteObject\Client\Rest\Builder\BuilderInterface;
 use RestRemoteObject\Client\Rest\Authentication\AuthenticationStrategyInterface;
 use RestRemoteObject\Client\Rest\Format\FormatStrategyInterface;
 use RestRemoteObject\Client\Rest\Versioning\VersioningStrategyInterface;
@@ -26,9 +26,9 @@ class Rest implements ClientInterface
     protected $client;
 
     /**
-     * @var ArgumentBuilderInterface $argumentBuilder
+     * @var BuilderInterface[] $builders
      */
-    protected $argumentBuilder;
+    protected $builders = array();
 
     /**
      * @var FormatStrategyInterface $formatStrategy
@@ -86,19 +86,26 @@ class Rest implements ClientInterface
     {
         if (null === $binder) {
             $binder = new Binder();
-        } else {
-            $descriptor->bind($binder);
         }
 
         $client = $this->getHttpClient();
-        $client->setUri($this->uri . $descriptor->getApiResource());
-
         $request = $client->getRequest();
 
         $context = new Context();
         $context->setRequest($request);
         $context->setResourceDescriptor($descriptor);
         $context->setResourceBinder($binder);
+
+        $className = $descriptor->getClassName();
+        $builder = $this->getBuilder($className);
+        if ($builder) {
+            $methodName = $descriptor->getMethodName();
+            $builder->$methodName($context);
+        }
+
+        // bind and get the uri resource
+        $descriptor->bind($binder);
+        $client->setUri($this->uri . $descriptor->getApiResource());
 
         $formatStrategy = $this->getFormatStrategy();
         if ($formatStrategy) {
@@ -108,18 +115,13 @@ class Rest implements ClientInterface
         $httpMethod = $descriptor->getHttpMethod();
         $client->setMethod($httpMethod);
 
-        $params = $binder->getParams();
-
         switch($httpMethod) {
             case 'DELETE':
             case 'GET' :
                 break; // params already in the URI
             case 'PUT' :
             case 'POST' :
-                $argumentBuilder = $this->getArgumentBuilder();
-                if ($argumentBuilder) {
-                    $params = $argumentBuilder->build($context);
-                }
+                $params = $binder->getParams();
                 $client->setParameterPost($params);
                 break;
         }
@@ -184,24 +186,38 @@ class Rest implements ClientInterface
     }
 
     /**
-     * Get the arguments builder
+     * Get a builder
      *
-     * @return ArgumentBuilderInterface
+     * @param string $className
+     * @return BuilderInterface
      */
-    public function getArgumentBuilder()
+    public function getBuilder($className)
     {
-        return $this->argumentBuilder;
+        if (!isset($this->builders[$className])) {
+            return null;
+        }
+        return $this->builders[$className];
     }
 
     /**
-     * Set the arguments builder
+     * Get the builders
      *
-     * @param ArgumentBuilderInterface $argumentBuilder
+     * @return BuilderInterface[]
+     */
+    public function getBuilders()
+    {
+        return $this->builders;
+    }
+
+    /**
+     * Add a builder
+     *
+     * @param BuilderInterface $builder
      * @return $this
      */
-    public function setArgumentBuilder(ArgumentBuilderInterface $argumentBuilder)
+    public function addBuilder(BuilderInterface $builder)
     {
-        $this->argumentBuilder = $argumentBuilder;
+        $this->builders[$builder->getRelatedClass()] = $builder;
 
         return $this;
     }

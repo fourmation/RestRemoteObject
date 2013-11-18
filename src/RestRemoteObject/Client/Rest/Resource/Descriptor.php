@@ -12,7 +12,17 @@ class Descriptor
     /**
      * @var string
      */
-    protected $method;
+    protected $identifier;
+
+    /**
+     * @var string
+     */
+    protected $methodName;
+
+    /**
+     * @var string
+     */
+    protected $className;
 
     /**
      * @var MethodReflection
@@ -40,11 +50,11 @@ class Descriptor
     protected $returnAsArray = false;
 
     /**
-     * @param string $method
+     * @param string $identifier
      */
-    public function __construct($method)
+    public function __construct($identifier)
     {
-        $this->method = $method;
+        $this->identifier = $identifier;
     }
 
     /**
@@ -62,8 +72,10 @@ class Descriptor
     protected function getReflection()
     {
         if (null === $this->reflection) {
-            list($serviceName, $methodName) = explode('.', $this->method);
-            $this->reflection = new MethodReflection($serviceName, $methodName);
+            $service = explode('.', $this->identifier);
+            $this->className = $service[0];
+            $this->methodName = $service[1];
+            $this->reflection = new MethodReflection($this->className, $this->methodName);
         }
 
         return $this->reflection;
@@ -153,13 +165,33 @@ class Descriptor
     }
 
     /**
-     * Get the service method name, eg MyInterface.myMethod
+     * Get the service identifier name, eg MyInterface.myMethod
+     *
+     * @return string
+     */
+    public function getIdentifier()
+    {
+        return $this->identifier;
+    }
+
+    /**
+     * Get the service method name, eg MyInterface
+     *
+     * @return string
+     */
+    public function getClassName()
+    {
+        return $this->className;
+    }
+
+    /**
+     * Get the service method name, eg myMethod
      *
      * @return string
      */
     public function getMethodName()
     {
-        return $this->method;
+        return $this->methodName;
     }
 
     /**
