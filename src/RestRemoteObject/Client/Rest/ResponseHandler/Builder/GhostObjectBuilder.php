@@ -77,6 +77,10 @@ class GhostObjectBuilder implements BuilderInterface
             }
         }
 
+        if (!$remoteMethods) {
+            return new $returnType();
+        }
+
         $client = $this->client;
 
         $factory = new LazyLoadingGhostFactory();
@@ -87,9 +91,7 @@ class GhostObjectBuilder implements BuilderInterface
                 if (isset($remoteMethods[$fullName])) {
                     /** @var Descriptor $resource */
                     $resource = $remoteMethods[$fullName];
-                    $binder = new Binder($proxy);
-                    $resource->bind($binder);
-                    $result = $client->doResourceRequest($resource);
+                    $result = $client->doResourceRequest($resource, new Binder($proxy));
                     $mapping = $resource->getMappingResult();
                     if ($mapping) {
                         $proxy->$mapping($result);

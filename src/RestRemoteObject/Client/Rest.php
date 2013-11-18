@@ -106,8 +106,8 @@ class Rest implements ClientInterface
         // build arguments
         $className = $descriptor->getClassName();
         $builder = $this->getBuilder($className);
-        if ($builder) {
-            $methodName = $descriptor->getMethodName();
+        $methodName = $descriptor->getMethodName();
+        if ($builder && method_exists($builder, $methodName)) {
             $builder->$methodName($context);
         }
 
