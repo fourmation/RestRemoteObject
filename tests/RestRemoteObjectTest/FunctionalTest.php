@@ -106,7 +106,7 @@ class FunctionalTest extends PHPUnit_Framework_TestCase
         $lastRequest = $this->httpClient->getLastRawRequest();
         $this->assertEquals("GET http://my-company.com/rest/users/1?t=" . time() . " HTTP/1.1\r\nContent-type: application/json", trim($lastRequest,  "\r\n"));
     }
-    /*
+
     public function testCanPilotResultObject()
     {
         $responseHandler = $this->restClient->getResponseHandler();
@@ -116,5 +116,4 @@ class FunctionalTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(1, count($locations));
     }
-    */
 }

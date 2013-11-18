@@ -230,7 +230,7 @@ class Descriptor
         }
 
         if ($object) {
-            $apiResource = @preg_replace('/:(\w+)/e', '$bject->$1()', $apiResource);
+            $apiResource = @preg_replace('/:(\w+)/e', '$object->$1()', $apiResource);
         }
 
         $this->apiResource = $apiResource;
