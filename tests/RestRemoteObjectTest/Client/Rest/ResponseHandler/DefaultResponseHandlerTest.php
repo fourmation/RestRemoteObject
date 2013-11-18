@@ -3,7 +3,7 @@
 namespace RestRemoteObjectTest\Client\Rest\ResponseHandler;
 
 use RestRemoteObject\Client\Rest\Context;
-use RestRemoteObject\Client\Rest\ResourceDescriptor;
+use RestRemoteObject\Client\Rest\Resource\Descriptor;
 use RestRemoteObject\Client\Rest\Format\Format;
 
 use RestRemoteObject\Client\Rest\ResponseHandler\DefaultResponseHandler;
@@ -15,7 +15,7 @@ class DefaultResponseHandlerTest extends PHPUnit_Framework_TestCase
     public function testCanGetJsonResponse()
     {
         $format = new Format(Format::JSON);
-        $descriptor = new ResourceDescriptor('\RestRemoteObjectTestAsset\Services\UserServiceMock.get', array(1));
+        $descriptor = new Descriptor('\RestRemoteObjectTestAsset\Services\UserServiceMock.get', array(1));
         $response = new Response();
         $response->setContent(json_encode(array(array('address' => 'Pitt Street'))));
 

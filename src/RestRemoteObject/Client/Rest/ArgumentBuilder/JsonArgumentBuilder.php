@@ -12,7 +12,7 @@ class JsonArgumentBuilder implements ArgumentBuilderInterface
      */
     public function build(Context $context)
     {
-        $params = $context->getResourceDescriptor()->getParams();
+        $params = $context->getResourceBinder()->getParams();
         return array(json_encode($params));
     }
 }

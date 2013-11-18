@@ -4,7 +4,8 @@ namespace RestRemoteObject\Client\Rest\ResponseHandler\Builder;
 
 use RestRemoteObject\Client\Rest;
 use RestRemoteObject\Client\Rest\Context;
-use RestRemoteObject\Client\Rest\ResourceDescriptor;
+use RestRemoteObject\Client\Rest\Resource\Descriptor;
+use RestRemoteObject\Client\Rest\Resource\Binder;
 
 use Zend\Code\Reflection\ClassReflection;
 use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
@@ -17,11 +18,6 @@ class GhostObjectBuilder implements BuilderInterface
      * @var Rest
      */
     protected $client;
-
-    /**
-     * @var
-     */
-    protected $lazyLoadingMap;
 
     /**
      * @param Rest $client
@@ -75,7 +71,7 @@ class GhostObjectBuilder implements BuilderInterface
 
         $remoteMethods = array();
         foreach ($methods as $method) {
-            $descriptor = new ResourceDescriptor($returnType . '.' . $method->getName());
+            $descriptor = new Descriptor($returnType . '.' . $method->getName());
             if ($descriptor->isValid()) {
                 $remoteMethods[$returnType . '.' . $method->getName()] = $descriptor;
             }
@@ -89,10 +85,11 @@ class GhostObjectBuilder implements BuilderInterface
             function($proxy, $method, $parameters, & $initializer) use ($returnType, $client, $remoteMethods) {
                 $fullName = $returnType . '.' . $method;
                 if (isset($remoteMethods[$fullName])) {
-                    /** @var ResourceDescriptor $resource */
+                    /** @var Descriptor $resource */
                     $resource = $remoteMethods[$fullName];
-                    $resource->bind($proxy);
-                    $result = $client->callResource($resource);
+                    $binder = new Binder($proxy);
+                    $resource->bind($binder);
+                    $result = $client->doResourceRequest($resource);
                     $setter = preg_replace('#^get#', 'set', $method);
                     $proxy->$setter($result);
                 }
@@ -102,15 +99,5 @@ class GhostObjectBuilder implements BuilderInterface
         );
 
         return $proxy;
-    }
-
-    public function setLazyLoadingMap(array $lazyLoadingMap)
-    {
-        $this->lazyLoadingMap = $lazyLoadingMap;
-    }
-
-    public function getLazyLoadingMap()
-    {
-        return $this->lazyLoadingMap;
     }
 }

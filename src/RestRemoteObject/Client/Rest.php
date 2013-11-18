@@ -3,11 +3,11 @@
 namespace RestRemoteObject\Client;
 
 use RestRemoteObject\Client\Rest\Context;
-use RestRemoteObject\Client\Rest\ResourceDescriptor;
+use RestRemoteObject\Client\Rest\Resource\Binder;
+use RestRemoteObject\Client\Rest\Resource\Descriptor;
 use RestRemoteObject\Client\Rest\ResponseHandler;
 use RestRemoteObject\Client\Rest\ArgumentBuilder\ArgumentBuilderInterface;
 use RestRemoteObject\Client\Rest\Authentication\AuthenticationStrategyInterface;
-use RestRemoteObject\Client\Rest\Format\Format;
 use RestRemoteObject\Client\Rest\Format\FormatStrategyInterface;
 use RestRemoteObject\Client\Rest\Versioning\VersioningStrategyInterface;
 use RestRemoteObject\Client\Rest\ResponseHandler\ResponseHandlerInterface;
@@ -68,20 +68,26 @@ class Rest implements ClientInterface
      */
     public function call($method, $params = array())
     {
-        $descriptor = new ResourceDescriptor($method, $params);
+        $descriptor = new Descriptor($method);
+        $binder = new Binder($params);
         if (!$descriptor->isValid()) {
             throw new MissingResourceDescriptionException(sprintf('Method %s docblock must defined a @rest\http tag which provide the HTTP method to use ann a @rest\uri tag', $method));
         }
 
-        return $this->callResource($descriptor);
+        return $this->doResourceRequest($descriptor, $binder);
     }
 
     /**
-     * @param ResourceDescriptor $descriptor
+     * @param Descriptor $descriptor
+     * @param Binder $binder
      * @return array
      */
-    public function callResource(ResourceDescriptor $descriptor)
+    public function doResourceRequest(Descriptor $descriptor, Binder $binder = null)
     {
+        if (null === $binder) {
+            $binder = new Binder();
+        }
+
         $client = $this->getHttpClient();
         $client->setUri($this->uri . $descriptor->getApiResource());
 
@@ -90,6 +96,7 @@ class Rest implements ClientInterface
         $context = new Context();
         $context->setRequest($request);
         $context->setResourceDescriptor($descriptor);
+        $context->setResourceBinder($binder);
 
         $formatStrategy = $this->getFormatStrategy();
         if ($formatStrategy) {
@@ -99,7 +106,7 @@ class Rest implements ClientInterface
         $httpMethod = $descriptor->getHttpMethod();
         $client->setMethod($httpMethod);
 
-        $params = $descriptor->getParams();
+        $params = $binder->getParams();
 
         switch($httpMethod) {
             case 'DELETE':

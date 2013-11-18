@@ -2,9 +2,11 @@
 
 namespace RestRemoteObject\Client\Rest;
 
-use Zend\Http\Request;
-use RestRemoteObject\Client\Rest\ResourceDescriptor;
+use RestRemoteObject\Client\Rest\Resource\Descriptor;
+use RestRemoteObject\Client\Rest\Resource\Binder;
 use RestRemoteObject\Client\Rest\Format\Format;
+
+use Zend\Http\Request;
 
 class Context
 {
@@ -15,9 +17,14 @@ class Context
     protected $request;
 
     /**
-     * @var ResourceDescriptor $resourceDescriptor
+     * @var Descriptor $resourceDescriptor
      */
     protected $resourceDescriptor;
+
+    /**
+     * @var Binder $resourceBinder
+     */
+    protected $resourceBinder;
 
     /**
      * @var Format $formatStrategy
@@ -50,7 +57,7 @@ class Context
     /**
      * Get the resource descriptor
      *
-     * @return ResourceDescriptor
+     * @return Descriptor
      */
     public function getResourceDescriptor()
     {
@@ -60,12 +67,35 @@ class Context
     /**
      * Set the resource descriptor
      *
-     * @param $resourceDescriptor
+     * @param Descriptor $resourceDescriptor
      * @return $this
      */
-    public function setResourceDescriptor(ResourceDescriptor $resourceDescriptor)
+    public function setResourceDescriptor(Descriptor $resourceDescriptor)
     {
         $this->resourceDescriptor = $resourceDescriptor;
+
+        return $this;
+    }
+
+    /**
+     * Get the resource binder
+     *
+     * @return Binder
+     */
+    public function getResourceBinder()
+    {
+        return $this->resourceBinder;
+    }
+
+    /**
+     * Set the resource binder
+     *
+     * @param Binder $resourceBinder
+     * @return $this
+     */
+    public function setResourceBinder(Binder $resourceBinder)
+    {
+        $this->resourceBinder = $resourceBinder;
 
         return $this;
     }

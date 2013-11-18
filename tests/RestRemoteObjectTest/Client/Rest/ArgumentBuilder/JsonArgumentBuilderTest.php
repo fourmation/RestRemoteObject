@@ -3,7 +3,8 @@
 namespace RestRemoteObjectTest\Client\Rest\ArgumentBuilder;
 
 use RestRemoteObject\Client\Rest\Context;
-use RestRemoteObject\Client\Rest\ResourceDescriptor;
+use RestRemoteObject\Client\Rest\Resource\Descriptor;
+use RestRemoteObject\Client\Rest\Resource\Binder;
 use RestRemoteObject\Client\Rest\ArgumentBuilder\JsonArgumentBuilder;
 
 use Zend\Http\Client as HttpClient;
@@ -15,8 +16,9 @@ class JsonArgumentBuilderTest extends  PHPUnit_Framework_TestCase
     public function testCanConvertJsonArguments()
     {
         $context = new Context();
-        $descriptor = new ResourceDescriptor(__CLASS__ . '.' . __FUNCTION__, array('foo', 'bar'));
+        $descriptor = new Descriptor(__CLASS__ . '.' . __FUNCTION__);
         $context->setResourceDescriptor($descriptor);
+        $context->setResourceBinder(new Binder(array('foo', 'bar')));
 
         $argBuilder = new JsonArgumentBuilder();
         $output = $argBuilder->build($context);
