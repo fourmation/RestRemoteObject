@@ -254,11 +254,17 @@ class User
     /**
      * @rest\http GET
      * @rest\uri /locations?user=:getId
+     * @rest\mapping setLocations
      * @return \RestRemoteObjectTestAsset\Models\Location[]
      */
     public function getLocations()
     {
         return $this->locations;
+    }
+
+    public function setLocations(array $locations)
+    {
+        $this->locations = $locations;
     }
 }
 ```
