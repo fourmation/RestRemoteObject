@@ -90,8 +90,10 @@ class GhostObjectBuilder implements BuilderInterface
                     $binder = new Binder($proxy);
                     $resource->bind($binder);
                     $result = $client->doResourceRequest($resource);
-                    $setter = preg_replace('#^get#', 'set', $method);
-                    $proxy->$setter($result);
+                    $mapping = $resource->getMappingResult();
+                    if ($mapping) {
+                        $proxy->$mapping($result);
+                    }
                 }
 
                 return true;

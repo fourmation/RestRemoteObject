@@ -33,6 +33,7 @@ class User
     /**
      * @rest\http GET
      * @rest\uri /locations?user=:getId
+     * @rest\mapping setLocations
      * @return \RestRemoteObjectTestAsset\Models\Location[]
      */
     public function getLocations()

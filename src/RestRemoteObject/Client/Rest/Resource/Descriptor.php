@@ -50,6 +50,11 @@ class Descriptor
     protected $returnAsArray = false;
 
     /**
+     * @var string
+     */
+    protected $mapping;
+
+    /**
      * @param string $identifier
      */
     public function __construct($identifier)
@@ -162,6 +167,30 @@ class Descriptor
     {
         $this->getReturnType();
         return (bool)preg_match('#\[\]$#', $this->returnType);
+    }
+
+    /**
+     * @return string
+     */
+    public function getMappingResult()
+    {
+        if (null !== $this->mapping) {
+            return $this->mapping;
+        }
+
+        $reflection = $this->getReflection();
+        $docBlock   = $reflection->getDocBlock();
+        if (!$docBlock) {
+            return;
+        }
+
+        $mapping    = $docBlock->getTag('rest\mapping');
+        if (!$mapping) {
+            return;
+        }
+
+        $this->mapping = $mapping->getContent();
+        return $this->mapping;
     }
 
     /**
