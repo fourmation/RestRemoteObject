@@ -77,7 +77,7 @@ class Rest implements ClientInterface
     {
         $descriptor = new ResourceDescriptor($method, $params);
         if (!$descriptor->isValid()) {
-            throw new MissingResourceDescriptionException(sprintf('Method %s docblock must defined a @rest\http tag which provide the HTTP method to use ann a @rest\uri tag', $this->method));
+            throw new MissingResourceDescriptionException(sprintf('Method %s docblock must defined a @rest\http tag which provide the HTTP method to use ann a @rest\uri tag', $method));
         }
 
         return $this->callResource($descriptor);
