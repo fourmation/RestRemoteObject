@@ -104,18 +104,16 @@ class Rest implements ClientInterface
 
         $params = $descriptor->getParams();
 
-        $argumentBuilder = $this->getArgumentBuilder();
-        if ($argumentBuilder) {
-            $params = $argumentBuilder->build($context);
-        }
-
         switch($httpMethod) {
-            case 'GET' : break; // params already in the URI
-            case 'POST';
-                $client->setParameterPost($params);
-                break;
-            case 'DELETE'; break;
-            case 'PUT';
+            case 'DELETE':
+            case 'GET' :
+                break; // params already in the URI
+            case 'PUT' :
+            case 'POST' :
+                $argumentBuilder = $this->getArgumentBuilder();
+                if ($argumentBuilder) {
+                    $params = $argumentBuilder->build($context);
+                }
                 $client->setParameterPost($params);
                 break;
         }
