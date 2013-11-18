@@ -96,7 +96,7 @@ class Descriptor
             if (!$http) {
                 return null;
             }
-            $this->httpMethod  = $docBlock->getTag('rest\http')->getContent();
+            $this->httpMethod  = $http->getContent();
         }
 
         return $this->httpMethod;
