@@ -28,6 +28,6 @@ class HeaderFormatStrategyTest extends PHPUnit_Framework_TestCase
         $strategy->format($context);
 
         $headers = $request->getHeaders()->toString();
-        $this->assertEquals('Content-type: application/json', trim($headers, "\r\n"));
+        $this->assertEquals('Accept: application/json', trim($headers, "\r\n"));
     }
 }

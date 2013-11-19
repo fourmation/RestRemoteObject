@@ -12,6 +12,6 @@ class HeaderFormatStrategy extends AbstractFormatStrategy
      */
     public function format(Context $context)
     {
-        $context->getRequest()->getHeaders()->addHeaderLine('Content-type: application/' . $this->getFormat()->toString());
+        $context->getRequest()->getHeaders()->addHeaderLine('Accept: application/' . $this->getFormat()->toString());
     }
 }

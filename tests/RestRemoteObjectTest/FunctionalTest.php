@@ -77,7 +77,7 @@ class FunctionalTest extends PHPUnit_Framework_TestCase
         $this->remote->get(1);
 
         $lastRequest = $this->httpClient->getLastRawRequest();
-        $this->assertEquals("GET http://my-company.com/rest/users/1 HTTP/1.1\r\nRest-Version: v3\r\nContent-type: application/json", trim($lastRequest,  "\r\n"));
+        $this->assertEquals("GET http://my-company.com/rest/users/1 HTTP/1.1\r\nRest-Version: v3\r\nAccept: application/json", trim($lastRequest,  "\r\n"));
     }
 
     public function testCanAuthenticateRequest()
@@ -86,7 +86,7 @@ class FunctionalTest extends PHPUnit_Framework_TestCase
         $this->remote->get(1);
 
         $lastRequest = $this->httpClient->getLastRawRequest();
-        $this->assertEquals("GET http://my-company.com/rest/users/1?token=qwerty HTTP/1.1\r\nContent-type: application/json", trim($lastRequest,  "\r\n"));
+        $this->assertEquals("GET http://my-company.com/rest/users/1?token=qwerty HTTP/1.1\r\nAccept: application/json", trim($lastRequest,  "\r\n"));
     }
 
     public function testCanAddBuilder()
@@ -95,7 +95,7 @@ class FunctionalTest extends PHPUnit_Framework_TestCase
         $this->remote->get(1);
 
         $lastRequest = $this->httpClient->getLastRawRequest();
-        $this->assertEquals("GET http://my-company.com/rest/users/2" . " HTTP/1.1\r\nContent-type: application/json", trim($lastRequest,  "\r\n"));
+        $this->assertEquals("GET http://my-company.com/rest/users/2" . " HTTP/1.1\r\nAccept: application/json", trim($lastRequest,  "\r\n"));
     }
 
     public function testCanAddTimestampFeature()
@@ -104,7 +104,7 @@ class FunctionalTest extends PHPUnit_Framework_TestCase
         $this->remote->get(1);
 
         $lastRequest = $this->httpClient->getLastRawRequest();
-        $this->assertEquals("GET http://my-company.com/rest/users/1?t=" . time() . " HTTP/1.1\r\nContent-type: application/json", trim($lastRequest,  "\r\n"));
+        $this->assertEquals("GET http://my-company.com/rest/users/1?t=" . time() . " HTTP/1.1\r\nAccept: application/json", trim($lastRequest,  "\r\n"));
     }
 
     public function testCanPilotResultObject()
