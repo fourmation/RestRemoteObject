@@ -119,12 +119,15 @@ class Rest implements ClientInterface
         $httpMethod = $descriptor->getHttpMethod();
         $client->setMethod($httpMethod);
 
-        // set the reauest params
+        // set the request params
         switch($httpMethod) {
             case 'DELETE':
             case 'GET' :
                 break; // params already in the URI
             case 'PUT' :
+                $params = $binder->getParams();
+                $request->setContent(implode('&', $params));
+                break;
             case 'POST' :
                 $params = $binder->getParams();
                 $client->setParameterPost($params);
@@ -158,7 +161,12 @@ class Rest implements ClientInterface
         $response = $client->send();
 
         $responseHandler = $this->getResponseHandler();
-        return $responseHandler->buildResponse($context, $response);
+        $response = $responseHandler->buildResponse($context, $response);
+
+        // don't forget to reset client
+        $client->reset();
+
+        return $response;
     }
 
     /**
