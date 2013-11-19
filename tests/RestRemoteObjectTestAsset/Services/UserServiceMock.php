@@ -43,4 +43,13 @@ class UserServiceMock implements UserServiceInterface
     {
 
     }
+
+    /**
+     * @rest\http POST
+     * @rest\uri /bad
+     */
+    public function badResource()
+    {
+
+    }
 }

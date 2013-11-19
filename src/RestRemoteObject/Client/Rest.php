@@ -14,6 +14,7 @@ use RestRemoteObject\Client\Rest\ResponseHandler\ResponseHandlerInterface;
 use RestRemoteObject\Client\Rest\ResponseHandler\DefaultResponseHandler;
 use RestRemoteObject\Client\Rest\Feature\FeatureInterface;
 use RestRemoteObject\Client\Rest\Exception\MissingResourceDescriptionException;
+use RestRemoteObject\Client\Rest\Exception\RuntimeMethodException;
 
 use Zend\Http\Client as HttpClient;
 use Zend\Server\Client as ClientInterface;
@@ -81,6 +82,7 @@ class Rest implements ClientInterface
      * @param Descriptor $descriptor
      * @param Binder $binder
      * @return array
+     * @throws RuntimeMethodException
      */
     public function doResourceRequest(Descriptor $descriptor, Binder $binder = null)
     {
@@ -167,6 +169,11 @@ class Rest implements ClientInterface
         }
 
         $response = $client->send();
+
+        $statusCode = $response->getStatusCode();
+        if ($statusCode >= 300) {
+            throw new RuntimeMethodException($response, sprintf('API method "%s" has encountered a problem"', $descriptor->getIdentifier()));
+        }
 
         $responseHandler = $this->getResponseHandler();
         $response = $responseHandler->buildResponse($context, $response);

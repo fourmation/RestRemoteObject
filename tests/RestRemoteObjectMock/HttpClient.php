@@ -82,7 +82,7 @@ class HttpClient extends BaseHttpClient
         }
 
         else {
-            throw new \RuntimeException('Http mock routing error : ' . $uri->toString());
+            $response->setStatusCode(404);
         }
 
         return $response;

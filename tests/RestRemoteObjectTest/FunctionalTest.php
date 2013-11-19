@@ -9,6 +9,7 @@ use RestRemoteObject\Client\Rest\Authentication\TokenAuthenticationStrategy;
 use RestRemoteObject\Client\Rest\Format\Format;
 use RestRemoteObject\Client\Rest\Format\HeaderFormatStrategy;
 use RestRemoteObject\Client\Rest\ResponseHandler\Builder\GhostObjectBuilder;
+use RestRemoteObject\Client\Rest\Exception\RuntimeMethodException;
 
 use RestRemoteObjectTestAsset\Builder\UserBuilder;
 use RestRemoteObjectTestAsset\Models\Location;
@@ -115,5 +116,16 @@ class FunctionalTest extends PHPUnit_Framework_TestCase
         $locations = $user->getLocations();
 
         $this->assertEquals(1, count($locations));
+    }
+
+    public function testCanCallBadResource()
+    {
+        try {
+            $this->remote->badResource();
+        } catch (RuntimeMethodException $e) {
+            $this->assertInstanceOf('RestRemoteObject\Client\Rest\Exception\RemoteExceptionInterface', $e);
+            $this->assertInstanceOf('Zend\Http\Response', $e->getResponse());
+        }
+
     }
 }

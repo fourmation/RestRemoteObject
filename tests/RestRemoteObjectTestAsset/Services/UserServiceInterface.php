@@ -34,4 +34,10 @@ interface UserServiceInterface
      * @return \RestRemoteObjectTestAsset\Models\User
      */
     public function create(array $data);
+
+    /**
+     * @rest\http POST
+     * @rest\uri /bad
+     */
+    public function badResource();
 }
