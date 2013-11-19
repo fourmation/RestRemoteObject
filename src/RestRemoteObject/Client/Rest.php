@@ -89,6 +89,7 @@ class Rest implements ClientInterface
         }
 
         $client = $this->getHttpClient();
+        $client->reset();
         $request = $client->getRequest();
 
         // create context
@@ -162,9 +163,6 @@ class Rest implements ClientInterface
 
         $responseHandler = $this->getResponseHandler();
         $response = $responseHandler->buildResponse($context, $response);
-
-        // don't forget to reset client
-        $client->reset();
 
         return $response;
     }
