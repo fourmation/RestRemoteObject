@@ -86,15 +86,18 @@ class GhostObjectBuilder implements BuilderInterface
         $factory = new LazyLoadingGhostFactory();
         $proxy = $factory->createProxy(
             $returnType,
-            function($proxy, $method, $parameters, & $initializer) use ($returnType, $client, $remoteMethods) {
+            function($proxy, $method, $parameters, & $initializer) use ($returnType, $client, &$remoteMethods) {
                 $fullName = $returnType . '.' . $method;
                 if (isset($remoteMethods[$fullName])) {
                     /** @var Descriptor $resource */
                     $resource = $remoteMethods[$fullName];
+
                     $binder = new Binder();
                     $binder->setObject($proxy);
                     $binder->setParams($parameters);
+
                     $result = $client->doResourceRequest($resource, $binder);
+
                     $mapping = $resource->getMappingResult();
                     if ($mapping) {
                         $proxy->$mapping($result);
