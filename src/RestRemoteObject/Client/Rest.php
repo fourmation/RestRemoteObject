@@ -238,6 +238,21 @@ class Rest implements ClientInterface
     }
 
     /**
+     * Add builders
+     *
+     * @param BuilderInterface[] $builder
+     * @return $this
+     */
+    public function addBuilders($builders)
+    {
+        foreach ($builders as $builder) {
+            $this->addBuilder($builder);
+        }
+
+        return $this;
+    }
+
+    /**
      * Set the format strategy
      *
      * @param FormatStrategyInterface $formatStrategy

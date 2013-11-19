@@ -91,7 +91,10 @@ class GhostObjectBuilder implements BuilderInterface
                 if (isset($remoteMethods[$fullName])) {
                     /** @var Descriptor $resource */
                     $resource = $remoteMethods[$fullName];
-                    $result = $client->doResourceRequest($resource, new Binder($proxy));
+                    $binder = new Binder();
+                    $binder->setObject($proxy);
+                    $binder->setParams($parameters);
+                    $result = $client->doResourceRequest($resource, $binder);
                     $mapping = $resource->getMappingResult();
                     if ($mapping) {
                         $proxy->$mapping($result);
