@@ -125,13 +125,20 @@ class Rest implements ClientInterface
             case 'DELETE':
             case 'GET' :
                 break; // params already in the URI
-            case 'PUT' :
-                $params = $binder->getParams();
-                $request->setContent(implode('&', $params));
-                break;
             case 'POST' :
                 $params = $binder->getParams();
-                $client->setParameterPost($params);
+                if (is_array($params)) {
+                    $client->setParameterPost($params);
+                } else {
+                    $request->setContent($params);
+                }
+                break;
+            case 'PUT' :
+                $params = $binder->getParams();
+                if (is_array($params)) {
+                    $params = implode('&', $params);
+                }
+                $request->setContent($params);
                 break;
         }
 

@@ -7,7 +7,7 @@ use Zend\Code\Reflection\MethodReflection;
 class Binder
 {
     /**
-     * @var array
+     * @var array|string
      */
     protected $params = array();
 
@@ -53,9 +53,9 @@ class Binder
     }
 
     /**
-     * @param array $params
+     * @param array|string $params
      */
-    public function setParams(array $params)
+    public function setParams($params)
     {
         $this->params = $params;
     }
