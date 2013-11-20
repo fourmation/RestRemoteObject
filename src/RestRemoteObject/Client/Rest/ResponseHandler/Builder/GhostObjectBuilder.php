@@ -77,10 +77,6 @@ class GhostObjectBuilder implements BuilderInterface
             }
         }
 
-        if (!$remoteMethods) {
-            return new $returnType();
-        }
-
         $client = $this->client;
 
         $factory = new LazyLoadingGhostFactory();
