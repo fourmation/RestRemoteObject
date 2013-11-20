@@ -222,6 +222,7 @@ class Rest implements ClientInterface
      */
     public function getBuilder($className)
     {
+        $className = ltrim($className, '\\');
         if (!isset($this->builders[$className])) {
             return null;
         }
