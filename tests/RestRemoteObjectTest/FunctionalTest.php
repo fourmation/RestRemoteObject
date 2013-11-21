@@ -10,6 +10,9 @@ use RestRemoteObject\Client\Rest\Format\Format;
 use RestRemoteObject\Client\Rest\Format\HeaderFormatStrategy;
 use RestRemoteObject\Client\Rest\ResponseHandler\Builder\GhostObjectBuilder;
 use RestRemoteObject\Client\Rest\Exception\RuntimeMethodException;
+use RestRemoteObject\Client\Rest\Debug\Debug;
+use RestRemoteObject\Client\Rest\Debug\Verbosity\Verbosity;
+use RestRemoteObject\Client\Rest\Debug\Writer\Printer;
 
 use RestRemoteObjectTestAsset\Builder\UserBuilder;
 use RestRemoteObjectTestAsset\Models\Location;
@@ -127,5 +130,22 @@ class FunctionalTest extends PHPUnit_Framework_TestCase
             $this->assertInstanceOf('Zend\Http\Response', $e->getResponse());
         }
 
+    }
+
+    public function testCanEnableVerbosity()
+    {
+        ob_start();
+
+        $debug = new Debug();
+        $debug->setVerbosity(new Verbosity(Verbosity::TRACE_REQUEST_URI));
+        $debug->setWriter(new Printer());
+        $this->restClient->setDebug($debug);
+
+        try {
+            $this->remote->badResource();
+        } catch (RuntimeMethodException $e) {}
+
+        $content = ob_get_clean();
+        $this->assertEquals('http://my-company.com/rest/bad', $content);
     }
 }

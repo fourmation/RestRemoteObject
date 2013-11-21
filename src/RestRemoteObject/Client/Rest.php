@@ -15,6 +15,7 @@ use RestRemoteObject\Client\Rest\ResponseHandler\DefaultResponseHandler;
 use RestRemoteObject\Client\Rest\Feature\FeatureInterface;
 use RestRemoteObject\Client\Rest\Exception\MissingResourceDescriptionException;
 use RestRemoteObject\Client\Rest\Exception\RuntimeMethodException;
+use RestRemoteObject\Client\Rest\Debug\Debug;
 
 use Zend\Http\Client as HttpClient;
 use Zend\Server\Client as ClientInterface;
@@ -57,6 +58,11 @@ class Rest implements ClientInterface
     protected $features = array();
 
     /**
+     * @var Debug
+     */
+    protected $debug;
+
+    /**
      * @param string $uri
      */
     public function __construct($uri)
@@ -90,6 +96,7 @@ class Rest implements ClientInterface
             $binder = new Binder();
         }
 
+        $debug = $this->getDebug();
         $client = $this->getHttpClient();
         $client->reset();
         $request = $client->getRequest();
@@ -116,11 +123,22 @@ class Rest implements ClientInterface
 
         // bind and get the uri resource
         $descriptor->bind($binder);
-        $client->setUri($this->uri . $descriptor->getApiResource());
+        $uri = $this->uri . $descriptor->getApiResource();
+        $client->setUri($uri);
+
+        // uri debug
+        if ($debug && $debug->getVerbosity()->hasUriTrace()) {
+            $debug->getWriter()->write($uri);
+        }
 
         // set the http method
         $httpMethod = $descriptor->getHttpMethod();
         $client->setMethod($httpMethod);
+
+        // uri debug
+        if ($debug && $debug->getVerbosity()->hasHttpMethodTrace()) {
+            $debug->getWriter()->write($httpMethod);
+        }
 
         // set the request params
         switch($httpMethod) {
@@ -255,7 +273,7 @@ class Rest implements ClientInterface
     /**
      * Add builders
      *
-     * @param BuilderInterface[] $builder
+     * @param $builders
      * @return $this
      */
     public function addBuilders($builders)
@@ -355,6 +373,29 @@ class Rest implements ClientInterface
     public function addFeature(FeatureInterface $feature)
     {
         $this->features[] = $feature;
+
+        return $this;
+    }
+
+    /**
+     * Get debug
+     *
+     * @return Debug
+     */
+    public function getDebug()
+    {
+        return $this->debug;
+    }
+
+    /**
+     * Set debug
+     *
+     * @param Debug $debug
+     * @return $this
+     */
+    public function setDebug(Debug $debug)
+    {
+        $this->debug = $debug;
 
         return $this;
     }
