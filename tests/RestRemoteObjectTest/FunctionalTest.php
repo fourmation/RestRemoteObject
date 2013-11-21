@@ -146,6 +146,6 @@ class FunctionalTest extends PHPUnit_Framework_TestCase
         } catch (RuntimeMethodException $e) {}
 
         $content = ob_get_clean();
-        $this->assertEquals('http://my-company.com/rest/bad', $content);
+        $this->assertEquals("Uri resource 'http://my-company.com/rest/bad'\n", $content);
     }
 }

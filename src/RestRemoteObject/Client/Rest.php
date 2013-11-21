@@ -128,16 +128,16 @@ class Rest implements ClientInterface
 
         // uri debug
         if ($debug && $debug->getVerbosity()->hasUriTrace()) {
-            $debug->getWriter()->write($uri);
+            $debug->getWriter()->write(sprintf("Uri resource '%s'\n", $uri));
         }
 
         // set the http method
         $httpMethod = $descriptor->getHttpMethod();
         $client->setMethod($httpMethod);
 
-        // uri debug
+        // http method debug
         if ($debug && $debug->getVerbosity()->hasHttpMethodTrace()) {
-            $debug->getWriter()->write($httpMethod);
+            $debug->getWriter()->write(sprintf("Http method '%s'\n", $httpMethod));
         }
 
         // set the request params
@@ -188,7 +188,18 @@ class Rest implements ClientInterface
 
         $response = $client->send();
 
+        // response debug
+        if ($debug && $debug->getVerbosity()->hasHttpResponseTrace()) {
+            $debug->getWriter()->write(sprintf("Http response '%s'\n", $response));
+        }
+
         $statusCode = $response->getStatusCode();
+
+        // status code debug
+        if ($debug && $debug->getVerbosity()->hasHttpStatusCodeTrace()) {
+            $debug->getWriter()->write(sprintf("Status code '%s'\n", $statusCode));
+        }
+
         if ($statusCode >= 300) {
             throw new RuntimeMethodException($response, sprintf('API method "%s" has encountered a problem"', $descriptor->getIdentifier()));
         }
