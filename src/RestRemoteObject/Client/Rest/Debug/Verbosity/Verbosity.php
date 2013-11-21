@@ -23,26 +23,26 @@ class Verbosity
 
     public function hasUriTrace()
     {
-        return ($this->level & self::TRACE_REQUEST_URI) == self::TRACE_REQUEST_URI;
+        return (bool)($this->level & self::TRACE_REQUEST_URI);
     }
 
     public function hasHttpMethodTrace()
     {
-        return ($this->level & self::TRACE_REQUEST_HTTP_METHOD) == self::TRACE_REQUEST_HTTP_METHOD;
+        return (bool)($this->level & self::TRACE_REQUEST_HTTP_METHOD);
     }
 
     public function hasHttpParamsTrace()
     {
-        return ($this->level & self::TRACE_REQUEST_HTTP_PARAMS) == self::TRACE_REQUEST_HTTP_PARAMS;
+        return (bool)($this->level & self::TRACE_REQUEST_HTTP_PARAMS);
     }
 
     public function hasHttpStatusCodeTrace()
     {
-        return ($this->level & self::TRACE_REQUEST_HTTP_STATUS_CODE) == self::TRACE_REQUEST_HTTP_STATUS_CODE;
+        return (bool)($this->level & self::TRACE_REQUEST_HTTP_STATUS_CODE);
     }
 
     public function hasHttpResponseTrace()
     {
-        return ($this->level & self::TRACE_REQUEST_HTTP_RESPONSE) == self::TRACE_REQUEST_HTTP_RESPONSE;
+        return (bool)($this->level & self::TRACE_REQUEST_HTTP_RESPONSE);
     }
 }
