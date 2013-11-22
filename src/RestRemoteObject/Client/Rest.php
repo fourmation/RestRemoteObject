@@ -16,6 +16,7 @@ use RestRemoteObject\Client\Rest\Feature\FeatureInterface;
 use RestRemoteObject\Client\Rest\Exception\MissingResourceDescriptionException;
 use RestRemoteObject\Client\Rest\Exception\RuntimeMethodException;
 use RestRemoteObject\Client\Rest\Debug\Debug;
+use RestRemoteObject\Client\Rest\ResponseHandler\Guardian\GuardianInterface;
 
 use Zend\Http\Client as HttpClient;
 use Zend\Server\Client as ClientInterface;
@@ -56,6 +57,11 @@ class Rest implements ClientInterface
      * @var FeatureInterface[] $features
      */
     protected $features = array();
+
+    /**
+     * @var GuardianInterface
+     */
+    protected $guardian;
 
     /**
      * @var Debug
@@ -188,9 +194,15 @@ class Rest implements ClientInterface
 
         $response = $client->send();
 
+        // guard the api response
+        $guardian = $this->getGuardian();
+        if ($guardian) {
+            $guardian->guard($response);
+        }
+
         // response debug
         if ($debug && $debug->getVerbosity()->hasHttpResponseTrace()) {
-            $debug->getWriter()->write(sprintf("Http response '%s'\n", $response));
+            $debug->getWriter()->write(sprintf("Http response '%s'\n", $response->getContent()));
         }
 
         $statusCode = $response->getStatusCode();
@@ -386,6 +398,29 @@ class Rest implements ClientInterface
         $this->features[] = $feature;
 
         return $this;
+    }
+
+    /**
+     * Set the guardian
+     *
+     * @param $guardian
+     * @return $this
+     */
+    public function setGuardian($guardian)
+    {
+        $this->guardian = $guardian;
+
+        return $this;
+    }
+
+    /**
+     * Get the guardian
+     *
+     * @return GuardianInterface
+     */
+    public function getGuardian()
+    {
+        return $this->guardian;
     }
 
     /**
