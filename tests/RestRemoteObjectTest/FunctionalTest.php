@@ -93,6 +93,9 @@ class FunctionalTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("GET http://my-company.com/rest/users/1?token=qwerty HTTP/1.1\r\nAccept: application/json", trim($lastRequest,  "\r\n"));
     }
 
+    /**
+     * change to add a test zith post/put method
+     *
     public function testCanAddBuilder()
     {
         $this->restClient->addBuilder(new UserBuilder());
@@ -101,6 +104,7 @@ class FunctionalTest extends PHPUnit_Framework_TestCase
         $lastRequest = $this->httpClient->getLastRawRequest();
         $this->assertEquals("GET http://my-company.com/rest/users/2" . " HTTP/1.1\r\nAccept: application/json", trim($lastRequest,  "\r\n"));
     }
+    */
 
     public function testCanAddTimestampFeature()
     {
