@@ -238,21 +238,19 @@ class Descriptor
         if ($params) {
             $parametersList = array();
 
-            if ($httpMethod === 'GET') {
-                $parameters = $reflection->getParameters();
-                foreach($parameters as $parameter) {
-                    $value = $params[$parameter->getPosition()];
-                    if (is_object($value)) {
-                        if ($value instanceof RestParametersAware) {
-                            $newParametersList = $value->getRestParameters();
-                        } else {
-                            $hydrator   = new ClassMethodsHydrator();
-                            $newParametersList = $hydrator->extract($value);
-                        }
-                        $parametersList = array_merge($parametersList, $newParametersList);
+            $parameters = $reflection->getParameters();
+            foreach($parameters as $parameter) {
+                $value = $params[$parameter->getPosition()];
+                if (is_object($value)) {
+                    if ($value instanceof RestParametersAware) {
+                        $newParametersList = $value->getRestParameters();
                     } else {
-                        $parametersList[$parameter->getName()] = $params[$parameter->getPosition()];
+                        $hydrator   = new ClassMethodsHydrator();
+                        $newParametersList = $hydrator->extract($value);
                     }
+                    $parametersList = array_merge($parametersList, $newParametersList);
+                } else {
+                    $parametersList[$parameter->getName()] = $params[$parameter->getPosition()];
                 }
             }
             $apiResource = @preg_replace('/%(\w+)/e', '$parametersList["$1"]', $apiResource);

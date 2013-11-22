@@ -113,6 +113,11 @@ class Rest implements ClientInterface
             $context->setFormat($formatStrategy->getFormat());
         }
 
+        // bind and get the uri resource
+        $descriptor->bind($binder);
+        $uri = $this->uri . $descriptor->getApiResource();
+        $client->setUri($uri);
+
         // build arguments
         $className = $descriptor->getClassName();
         $builder = $this->getBuilder($className);
@@ -120,11 +125,6 @@ class Rest implements ClientInterface
         if ($builder && method_exists($builder, $methodName)) {
             $builder->$methodName($context);
         }
-
-        // bind and get the uri resource
-        $descriptor->bind($binder);
-        $uri = $this->uri . $descriptor->getApiResource();
-        $client->setUri($uri);
 
         // uri debug
         if ($debug && $debug->getVerbosity()->hasUriTrace()) {
