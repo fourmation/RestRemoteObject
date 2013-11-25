@@ -213,7 +213,7 @@ class Rest implements ClientInterface
         }
 
         if ($statusCode >= 300) {
-            throw new RuntimeMethodException($response, sprintf('API method "%s" has encountered a problem"', $descriptor->getIdentifier()));
+            throw new RuntimeMethodException($response, sprintf('API method "%s" has encountered a problem (status code %s)', $descriptor->getIdentifier(), $statusCode));
         }
 
         $responseHandler = $this->getResponseHandler();

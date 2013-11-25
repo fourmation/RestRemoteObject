@@ -44,7 +44,7 @@ class DefaultResponseHandler implements ResponseHandlerInterface
             }
         }
 
-        $content = $responseParser->parse($content, $context);
+        $content = (array)$responseParser->parse($content, $context);
 
         $builder = $this->getResponseBuilder();
         return $builder->build($content, $context);
