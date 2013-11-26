@@ -22,7 +22,7 @@ use RestRemoteObjectMock\HttpClient;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Factory\RemoteObjectFactory;
 
-class FunctionalTest extends PHPUnit_Framework_TestCase
+class RestTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var RestClient
