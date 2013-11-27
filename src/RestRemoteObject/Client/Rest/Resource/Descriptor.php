@@ -150,7 +150,8 @@ class Descriptor
             // for basic type, add cast
             $types = $return->getTypes();
             $type = $types[0];
-            $this->returnType = ltrim($reflection->getNamespaceName(), '\\') . $type;
+            $type = $reflection->getNamespaceName() . $type;
+            $this->returnType = ltrim($type, '\\');
         }
 
         if (preg_match('#\[\]$#', $this->returnType)) {
