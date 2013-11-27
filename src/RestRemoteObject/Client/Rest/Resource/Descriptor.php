@@ -78,7 +78,7 @@ class Descriptor
     {
         if (null === $this->reflection) {
             $service = explode('.', $this->identifier);
-            $this->className = $service[0];
+            $this->className = ltrim($service[0], '\\');
             $this->methodName = $service[1];
             $this->reflection = new MethodReflection($this->className, $this->methodName);
         }
@@ -150,7 +150,7 @@ class Descriptor
             // for basic type, add cast
             $types = $return->getTypes();
             $type = $types[0];
-            $this->returnType = $reflection->getNamespaceName() . $type;
+            $this->returnType = ltrim($reflection->getNamespaceName(), '\\') . $type;
         }
 
         if (preg_match('#\[\]$#', $this->returnType)) {
