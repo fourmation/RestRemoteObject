@@ -29,11 +29,13 @@ class GhostObjectBuilder extends DefaultBuilder
 
     /**
      * Create instance
-     * @param $returnType
+     * @param Context $context
      * @return object
      */
-    protected function createInstance($returnType)
+    protected function createInstance(Context $context)
     {
+        $returnType = $context->getResourceDescriptor()->getReturnType();
+
         $reflection = new ClassReflection($returnType);
         $methods = $reflection->getMethods();
 

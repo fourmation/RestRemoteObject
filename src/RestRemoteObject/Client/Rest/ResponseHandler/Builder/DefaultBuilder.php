@@ -26,7 +26,7 @@ class DefaultBuilder implements BuilderInterface
         if ($descriptor->isReturnAsArray()) {
             $list       = array();
             foreach ($data as $row) {
-                $object = $this->createInstance($returnType);
+                $object = $this->createInstance($context);
                 $hydrator->hydrate((array)$row, $object);
                 $list[] = $object;
             }
@@ -34,18 +34,20 @@ class DefaultBuilder implements BuilderInterface
             return $list;
         }
 
-        $object = $this->createInstance($returnType);
+        $object = $this->createInstance($context);
         $hydrator->hydrate((array)$data, $object);
         return $object;
     }
 
     /**
      * Create instance
-     * @param $returnType
+     * @param Context $context
      * @return object
      */
-    protected function createInstance($returnType)
+    protected function createInstance(Context $context)
     {
+        $returnType = $context->getResourceDescriptor()->getReturnType();
+
         return new $returnType();
     }
 }
