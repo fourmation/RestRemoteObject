@@ -24,6 +24,11 @@ use Zend\Server\Client as ClientInterface;
 class Rest implements ClientInterface
 {
     /**
+     * @var string
+     */
+    protected $uri;
+
+    /**
      * @var HttpClient $client
      */
     protected $client;
@@ -73,7 +78,7 @@ class Rest implements ClientInterface
      */
     public function __construct($uri)
     {
-        $this->uri = trim($uri, '\/');
+        $this->setUri($uri);
     }
 
     /**
@@ -220,6 +225,22 @@ class Rest implements ClientInterface
         $response = $responseHandler->buildResponse($context, $response);
 
         return $response;
+    }
+
+    /**
+     * @param string $uri
+     */
+    public function setUri($uri)
+    {
+        $this->uri = trim($uri, '\/');
+    }
+
+    /**
+     * @return string
+     */
+    public function getUri()
+    {
+        return $this->uri;
     }
 
     /**
