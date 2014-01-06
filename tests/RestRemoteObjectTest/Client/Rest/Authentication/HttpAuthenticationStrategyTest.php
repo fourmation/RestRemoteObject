@@ -16,7 +16,10 @@ class HttpAuthenticationStrategyTest extends PHPUnit_Framework_TestCase
         $strategy->setUser('foo');
         $strategy->setPassword('123456');
 
-        $this->assertInstanceOf('RestRemoteObject\Client\Rest\Authentication\AuthenticationStrategyInterface', $strategy);
+        $this->assertInstanceOf(
+            'RestRemoteObject\Client\Rest\Authentication\AuthenticationStrategyInterface',
+            $strategy
+        );
 
         $request = new Request();
         $password = $request->getUri()->getPassword();

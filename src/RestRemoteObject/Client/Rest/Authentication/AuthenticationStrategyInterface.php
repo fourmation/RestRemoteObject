@@ -8,7 +8,7 @@ interface AuthenticationStrategyInterface
 {
     /**
      * Authenticate the request
-     * @param Context $context
+     * @param  Context $context
      * @return void
      */
     public function authenticate(Context $context);

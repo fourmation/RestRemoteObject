@@ -30,7 +30,7 @@ class HttpAuthenticationStrategy implements AuthenticationStrategyInterface
 
     /**
      * Authenticate the request
-     * @param Context $context
+     * @param  Context $context
      * @return void
      */
     public function authenticate(Context $context)
@@ -53,6 +53,7 @@ class HttpAuthenticationStrategy implements AuthenticationStrategyInterface
         if (null === $this->user) {
             throw new MissingAuthenticationParameterException('Username must be defined');
         }
+
         return $this->user;
     }
 
@@ -78,6 +79,7 @@ class HttpAuthenticationStrategy implements AuthenticationStrategyInterface
         if (null === $this->password) {
             throw new MissingAuthenticationParameterException('Password must be defined');
         }
+
         return $this->password;
     }
 

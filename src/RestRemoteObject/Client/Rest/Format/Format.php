@@ -4,8 +4,8 @@ namespace RestRemoteObject\Client\Rest\Format;
 
 class Format
 {
-    CONST JSON = 'json';
-    CONST XML  = 'xml';
+    const JSON = 'json';
+    const XML = 'xml';
 
     /**
      * @var string $format

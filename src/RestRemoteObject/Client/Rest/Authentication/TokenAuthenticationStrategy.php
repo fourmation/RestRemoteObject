@@ -24,7 +24,7 @@ class TokenAuthenticationStrategy implements AuthenticationStrategyInterface
 
     /**
      * Authenticate the request
-     * @param Context $context
+     * @param  Context $context
      * @return void
      */
     public function authenticate(Context $context)
@@ -48,6 +48,7 @@ class TokenAuthenticationStrategy implements AuthenticationStrategyInterface
         if (null === $this->token) {
             throw new MissingAuthenticationParameterException('Token must be defined');
         }
+
         return $this->token;
     }
 

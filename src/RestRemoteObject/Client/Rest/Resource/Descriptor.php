@@ -93,7 +93,7 @@ class Descriptor
     public function getHttpMethod()
     {
         if (null === $this->httpMethod) {
-            $docBlock   = $this->getReflection()->getDocBlock();
+            $docBlock = $this->getReflection()->getDocBlock();
             if (!$docBlock) {
                 return null;
             }
@@ -101,7 +101,7 @@ class Descriptor
             if (!$http) {
                 return null;
             }
-            $this->httpMethod  = $http->getContent();
+            $this->httpMethod = $http->getContent();
         }
 
         return $this->httpMethod;
@@ -115,7 +115,7 @@ class Descriptor
     {
         if (null === $this->apiResource) {
             $reflection = $this->getReflection();
-            $docBlock   = $reflection->getDocBlock();
+            $docBlock = $reflection->getDocBlock();
             if (!$docBlock) {
                 return null;
             }
@@ -123,7 +123,7 @@ class Descriptor
             if (!$uri) {
                 return null;
             }
-            $this->apiResource  = $uri->getContent();
+            $this->apiResource = $uri->getContent();
         }
 
         return $this->apiResource;
@@ -137,7 +137,7 @@ class Descriptor
     {
         if (null === $this->returnType) {
             $reflection = $this->getReflection();
-            $docBlock   = $reflection->getDocBlock();
+            $docBlock = $reflection->getDocBlock();
 
             /** @var \Zend\Code\Reflection\DocBlock\Tag\ReturnTag $return */
             $return = $docBlock->getTag('return');
@@ -167,7 +167,8 @@ class Descriptor
     public function isReturnAsArray()
     {
         $this->getReturnType();
-        return (bool)preg_match('#\[\]$#', $this->returnType);
+
+        return (bool) preg_match('#\[\]$#', $this->returnType);
     }
 
     /**
@@ -180,17 +181,18 @@ class Descriptor
         }
 
         $reflection = $this->getReflection();
-        $docBlock   = $reflection->getDocBlock();
+        $docBlock = $reflection->getDocBlock();
         if (!$docBlock) {
             return;
         }
 
-        $mapping    = $docBlock->getTag('rest\mapping');
+        $mapping = $docBlock->getTag('rest\mapping');
         if (!$mapping) {
             return;
         }
 
         $this->mapping = $mapping->getContent();
+
         return $this->mapping;
     }
 
@@ -240,13 +242,13 @@ class Descriptor
             $parametersList = array();
 
             $parameters = $reflection->getParameters();
-            foreach($parameters as $parameter) {
+            foreach ($parameters as $parameter) {
                 $value = $params[$parameter->getPosition()];
                 if (is_object($value)) {
                     if ($value instanceof RestParametersAware) {
                         $newParametersList = $value->getRestParameters();
                     } else {
-                        $hydrator   = new ClassMethodsHydrator();
+                        $hydrator = new ClassMethodsHydrator();
                         $newParametersList = $hydrator->extract($value);
                     }
                     $parametersList = array_merge($parametersList, $newParametersList);

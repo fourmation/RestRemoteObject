@@ -17,7 +17,7 @@ class UriVersioningStrategy implements VersioningStrategyInterface
     protected $baseUrl;
 
     /**
-     * @param string $version
+     * @param string      $version
      * @param null|string $baseUrl
      */
     public function __construct($version, $baseUrl = null)
@@ -30,7 +30,7 @@ class UriVersioningStrategy implements VersioningStrategyInterface
 
     /**
      * Version the request
-     * @param Context $context
+     * @param  Context $context
      * @return void
      */
     public function version(Context $context)

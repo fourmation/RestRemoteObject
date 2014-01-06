@@ -89,15 +89,19 @@ class Rest implements ClientInterface
         $descriptor = new Descriptor($method);
         $binder = new Binder($params);
         if (!$descriptor->isValid()) {
-            throw new MissingResourceDescriptionException(sprintf('Method %s docblock must defined a @rest\http tag which provide the HTTP method to use ann a @rest\uri tag', $method));
+            throw new MissingResourceDescriptionException(sprintf(
+                'Method %s docblock must defined a @rest\http tag which provide the \
+                HTTP method to use ann a @rest\uri tag',
+                $method
+            ));
         }
 
         return $this->doResourceRequest($descriptor, $binder);
     }
 
     /**
-     * @param Descriptor $descriptor
-     * @param Binder $binder
+     * @param  Descriptor             $descriptor
+     * @param  Binder                 $binder
      * @return array
      * @throws RuntimeMethodException
      */
@@ -152,11 +156,11 @@ class Rest implements ClientInterface
         }
 
         // set the request params
-        switch($httpMethod) {
+        switch ($httpMethod) {
             case 'DELETE':
-            case 'GET' :
+            case 'GET':
                 break; // params already in the URI
-            case 'POST' :
+            case 'POST':
                 $params = $binder->getParams();
                 if (is_array($params)) {
                     $client->setParameterPost($params);
@@ -164,7 +168,7 @@ class Rest implements ClientInterface
                     $request->setContent($params);
                 }
                 break;
-            case 'PUT' :
+            case 'PUT':
                 $params = $binder->getParams();
                 if (is_array($params)) {
                     $params = implode('&', $params);
@@ -218,7 +222,11 @@ class Rest implements ClientInterface
         }
 
         if ($statusCode >= 300) {
-            throw new RuntimeMethodException($response, sprintf('API method "%s" has encountered a problem (status code %s)', $descriptor->getIdentifier(), $statusCode));
+            throw new RuntimeMethodException($response, sprintf(
+                'API method "%s" has encountered a problem (status code %s)',
+                $descriptor->getIdentifier(),
+                $statusCode
+            ));
         }
 
         $responseHandler = $this->getResponseHandler();
@@ -257,7 +265,7 @@ class Rest implements ClientInterface
 
     /**
      * @param HttpClient $client
-     * @return $this
+     *                           @return $this
      */
     public function setHttpClient(HttpClient $client)
     {
@@ -279,7 +287,7 @@ class Rest implements ClientInterface
     /**
      * Get a builder
      *
-     * @param string $className
+     * @param  string           $className
      * @return BuilderInterface
      */
     public function getBuilder($className)
@@ -288,6 +296,7 @@ class Rest implements ClientInterface
         if (!isset($this->builders[$className])) {
             return null;
         }
+
         return $this->builders[$className];
     }
 
@@ -305,7 +314,7 @@ class Rest implements ClientInterface
      * Add a builder
      *
      * @param BuilderInterface $builder
-     * @return $this
+     *                                  @return $this
      */
     public function addBuilder(BuilderInterface $builder)
     {
@@ -332,7 +341,7 @@ class Rest implements ClientInterface
     /**
      * Set the format strategy
      *
-     * @param FormatStrategyInterface $formatStrategy
+     * @param  FormatStrategyInterface $formatStrategy
      * @return FormatStrategyInterface
      */
     public function setFormatStrategy(FormatStrategyInterface $formatStrategy)
@@ -354,7 +363,7 @@ class Rest implements ClientInterface
     /**
      * Set the authentication strategy
      * @param AuthenticationStrategyInterface $authenticationStrategy
-     * @return $this
+     *                                                                @return $this
      */
     public function setAuthenticationStrategy(AuthenticationStrategyInterface $authenticationStrategy)
     {
@@ -375,7 +384,7 @@ class Rest implements ClientInterface
     /**
      * Set the versioning strategy
      * @param VersioningStrategyInterface $versioningStrategy
-     * @return $this
+     *                                                        @return $this
      */
     public function setVersioningStrategy(VersioningStrategyInterface $versioningStrategy)
     {
@@ -400,7 +409,7 @@ class Rest implements ClientInterface
     /**
      * Set the response handler
      * @param ResponseHandlerInterface $responseHandler
-     * @return $this
+     *                                                  @return $this
      */
     public function setResponseHandler(ResponseHandlerInterface $responseHandler)
     {
@@ -412,7 +421,7 @@ class Rest implements ClientInterface
     /**
      * Add feature
      * @param FeatureInterface $feature
-     * @return $this
+     *                                  @return $this
      */
     public function addFeature(FeatureInterface $feature)
     {
@@ -458,7 +467,7 @@ class Rest implements ClientInterface
      * Set debug
      *
      * @param Debug $debug
-     * @return $this
+     *                     @return $this
      */
     public function setDebug(Debug $debug)
     {
