@@ -15,7 +15,10 @@ class TokenAuthenticationStrategyTest extends PHPUnit_Framework_TestCase
         $strategy = new TokenAuthenticationStrategy();
         $strategy->setToken('12345689');
 
-        $this->assertInstanceOf('RestRemoteObject\Client\Rest\Authentication\AuthenticationStrategyInterface', $strategy);
+        $this->assertInstanceOf(
+            'RestRemoteObject\Client\Rest\Authentication\AuthenticationStrategyInterface',
+            $strategy
+        );
 
         $request = new Request();
         $request->setUri('http://localhost/resource/1');
@@ -33,7 +36,10 @@ class TokenAuthenticationStrategyTest extends PHPUnit_Framework_TestCase
         $strategy = new TokenAuthenticationStrategy();
         $strategy->setToken('12345689');
 
-        $this->assertInstanceOf('RestRemoteObject\Client\Rest\Authentication\AuthenticationStrategyInterface', $strategy);
+        $this->assertInstanceOf(
+            'RestRemoteObject\Client\Rest\Authentication\AuthenticationStrategyInterface',
+            $strategy
+        );
 
         $request = new Request();
         $request->setUri('http://localhost/resource/1?foo=bar');

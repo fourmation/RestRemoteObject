@@ -17,7 +17,10 @@ class QueryAuthenticationStrategyTest extends PHPUnit_Framework_TestCase
         $strategy->setPublicKey('12345689');
         $strategy->setPrivateKey('qwerty');
 
-        $this->assertInstanceOf('RestRemoteObject\Client\Rest\Authentication\AuthenticationStrategyInterface', $strategy);
+        $this->assertInstanceOf(
+            'RestRemoteObject\Client\Rest\Authentication\AuthenticationStrategyInterface',
+            $strategy
+        );
 
         $request = new Request();
         $request->setUri('http://localhost/resource/1?user=1');
@@ -31,7 +34,10 @@ class QueryAuthenticationStrategyTest extends PHPUnit_Framework_TestCase
         $signature = $query['signature'];
         $compute = Hmac::compute('qwerty', 'sha1', '/resource/1?user=1');
         $this->assertEquals($compute, $signature);
-        $this->assertEquals('http://localhost/resource/1?user=1&public_key=12345689&signature=' . $compute, $request->getUri()->toString());
+        $this->assertEquals(
+            'http://localhost/resource/1?user=1&public_key=12345689&signature=' . $compute,
+            $request->getUri()->toString()
+        );
     }
 
     public function testAuthenticationWithoutToken()

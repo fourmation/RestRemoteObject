@@ -21,6 +21,7 @@ class PaginationOptions
     public function setLimit($limit)
     {
         $this->limit = $limit;
+
         return $this;
     }
 
@@ -32,6 +33,7 @@ class PaginationOptions
     public function setOffset($offset)
     {
         $this->offset = $offset;
+
         return $this;
     }
 }

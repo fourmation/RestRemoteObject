@@ -14,9 +14,9 @@ class RuntimeMethodException extends \RuntimeException implements
     protected $response;
 
     /**
-     * @param Response $response
-     * @param string $message
-     * @param int $code [optional] The Exception code.
+     * @param Response  $response
+     * @param string    $message
+     * @param int       $code     [optional] The Exception code.
      * @param Exception $previous [optional] The previous exception used for the exception chaining. Since 5.3.0
      */
     public function __construct(Response $response, $message, $code = 0, Exception $previous = null)

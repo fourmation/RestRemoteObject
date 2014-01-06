@@ -28,19 +28,19 @@ class HeadersGuardian implements GuardianInterface
     }
 
     /**
-     * @param Response $response
+     * @param  Response                                                       $response
      * @throws \RestRemoteObject\Client\Rest\Exception\ResponseErrorException
      */
     public function guard(Response $response)
     {
         $headers = $response->getHeaders();
-        foreach($this->errorsHeaders as $errorsHeader) {
+        foreach ($this->errorsHeaders as $errorsHeader) {
             $header = $headers->get($errorsHeader);
             if ($header) {
                 throw new ResponseErrorException(sprintf('Error header found "%s"', $header->getFieldValue()));
             }
         }
-        foreach($this->warningHeaders as $errorsHeader) {
+        foreach ($this->warningHeaders as $errorsHeader) {
             $header = $headers->get($errorsHeader);
             if ($header) {
                 trigger_error(sprintf('Warning header found "%s"', $header->getFieldValue()), E_USER_WARNING);

@@ -26,6 +26,7 @@ class Debug
         if (null === $this->verbosity) {
             $this->setVerbosity(new Verbosity(Verbosity::TRACE_DISABLED));
         }
+
         return $this->verbosity;
     }
 
@@ -45,6 +46,7 @@ class Debug
         if (null === $this->writer) {
             $this->setWriter(new Null());
         }
+
         return $this->writer;
     }
 

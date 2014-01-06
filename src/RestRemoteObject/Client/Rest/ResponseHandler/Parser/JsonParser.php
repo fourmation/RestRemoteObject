@@ -15,7 +15,7 @@ class JsonParser implements ParserInterface
      * Parse response content
      *
      * @param $content
-     * @param Context $context
+     * @param  Context $context
      * @return array
      */
     public function parse($content, Context $context)
@@ -39,7 +39,7 @@ class JsonParser implements ParserInterface
 
     /**
      * @param string $key
-     * @return $this
+     *                    @return $this
      */
     public function setKey($key)
     {

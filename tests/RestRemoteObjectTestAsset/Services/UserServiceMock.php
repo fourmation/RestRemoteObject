@@ -13,7 +13,7 @@ class UserServiceMock implements UserServiceInterface
     /**
      * @rest\http GET
      * @rest\uri /users/%id
-     * @param int $id
+     * @param  int                                    $id
      * @return \RestRemoteObjectTestAsset\Models\User
      */
     public function get($id)
@@ -24,8 +24,8 @@ class UserServiceMock implements UserServiceInterface
     /**
      * @rest\http GET
      * @rest\uri /users?location=%location&offset=%offset&limit=%limit
-     * @param Location $location
-     * @param PaginationOptions $pagination
+     * @param  Location                                 $location
+     * @param  PaginationOptions                        $pagination
      * @return \RestRemoteObjectTestAsset\Models\User[]
      */
     public function getUsersFromLocation(Location $location, PaginationOptions $pagination)
@@ -36,7 +36,7 @@ class UserServiceMock implements UserServiceInterface
     /**
      * @rest\http POST
      * @rest\uri /users
-     * @param array $data
+     * @param  array                                  $data
      * @return \RestRemoteObjectTestAsset\Models\User
      */
     public function create(array $data)

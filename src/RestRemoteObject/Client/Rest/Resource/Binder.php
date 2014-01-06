@@ -2,8 +2,6 @@
 
 namespace RestRemoteObject\Client\Rest\Resource;
 
-use Zend\Code\Reflection\MethodReflection;
-
 class Binder
 {
     /**
@@ -23,8 +21,10 @@ class Binder
     {
         if (is_object($data)) {
             $this->object = $data;
-        } else if(is_array($data)) {
-            $this->params = $data;
+        } else {
+            if (is_array($data)) {
+                $this->params = $data;
+            }
         }
     }
 

@@ -8,7 +8,6 @@ use RestRemoteObject\Client\Rest\Resource\Descriptor;
 use RestRemoteObject\Client\Rest\Resource\Binder;
 
 use Zend\Code\Reflection\ClassReflection;
-use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 use ProxyManager\Factory\LazyLoadingGhostFactory;
 
@@ -29,7 +28,7 @@ class GhostObjectBuilder extends DefaultBuilder
 
     /**
      * Create instance
-     * @param Context $context
+     * @param  Context $context
      * @return object
      */
     protected function createInstance(Context $context)
@@ -52,7 +51,7 @@ class GhostObjectBuilder extends DefaultBuilder
         $factory = new LazyLoadingGhostFactory();
         $proxy = $factory->createProxy(
             $returnType,
-            function($proxy, $method, $parameters, & $initializer) use ($returnType, $client, &$remoteMethods) {
+            function ($proxy, $method, $parameters, & $initializer) use ($returnType, $client, &$remoteMethods) {
                 $fullName = $returnType . '.' . $method;
                 if (isset($remoteMethods[$fullName])) {
                     /** @var Descriptor $resource */
