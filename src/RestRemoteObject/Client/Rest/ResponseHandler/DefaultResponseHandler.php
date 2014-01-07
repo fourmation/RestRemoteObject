@@ -24,8 +24,8 @@ class DefaultResponseHandler implements ResponseHandlerInterface
     protected $builder;
 
     /**
-     * @param Context $context
-     * @param Response $response
+     * @param  Context           $context
+     * @param  Response          $response
      * @return array
      * @throws \RuntimeException
      */
@@ -37,16 +37,19 @@ class DefaultResponseHandler implements ResponseHandlerInterface
             $format = $context->getFormat();
             if ($format->isJson()) {
                 $responseParser = new JsonParser();
-            } else if ($format->isXml()) {
-                $responseParser = new XmlParser();
             } else {
-                throw new \RuntimeException('You have to specify a response parser');
+                if ($format->isXml()) {
+                    $responseParser = new XmlParser();
+                } else {
+                    throw new \RuntimeException('You have to specify a response parser');
+                }
             }
         }
 
-        $content = (array)$responseParser->parse($content, $context);
+        $content = (array) $responseParser->parse($content, $context);
 
         $builder = $this->getResponseBuilder();
+
         return $builder->build($content, $context);
     }
 
@@ -80,6 +83,7 @@ class DefaultResponseHandler implements ResponseHandlerInterface
         if (null === $this->builder) {
             $this->setResponseBuilder(new DefaultBuilder());
         }
+
         return $this->builder;
     }
 

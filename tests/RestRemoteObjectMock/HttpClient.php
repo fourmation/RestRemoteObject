@@ -34,55 +34,55 @@ class HttpClient extends BaseHttpClient
                 )
             );
             $response->setContent($content);
-        }
+        } else {
+            if (preg_match('#users\/\d$#', $uri->toString())) {
+                $user = new User();
+                $user->setId(1);
+                $user->setName('Vincent');
 
-        else if (preg_match('#users\/\d$#', $uri->toString())) {
-            $user = new User();
-            $user->setId(1);
-            $user->setName('Vincent');
+                $content = json_encode(
+                    array(
+                        'id' => $user->getId(),
+                        'name' => $user->getName(),
+                    )
+                );
+                $response->setContent($content);
+            } else {
+                if (preg_match('#users#', $uri->toString())) {
+                    $user1 = new User();
+                    $user1->setName('Vincent');
 
-            $content = json_encode(
-                array(
-                    'id' => $user->getId(),
-                    'name' => $user->getName(),
-                )
-            );
-            $response->setContent($content);
-        }
+                    $user2 = new User();
+                    $user2->setName('Dave');
 
-        else if (preg_match('#users#', $uri->toString())) {
-            $user1 = new User();
-            $user1->setName('Vincent');
+                    $content = json_encode(
+                        array(
+                            array(
+                                'name' => $user1->getName(),
+                            ),
+                            array(
+                                'name' => $user2->getName(),
+                            ),
+                        )
+                    );
+                    $response->setContent($content);
+                } else {
+                    if (preg_match('#locations#', $uri->toString())) {
+                        $location1 = new Location();
+                        $location1->setId(1);
+                        $location1->setAddress('Pitt Street');
 
-            $user2 = new User();
-            $user2->setName('Dave');
-
-            $content = json_encode(array(
-                array(
-                    'name' => $user1->getName(),
-                ),
-                array(
-                    'name' => $user2->getName(),
-                ),
-            ));
-            $response->setContent($content);
-        }
-
-        else if (preg_match('#locations#', $uri->toString())) {
-            $location1 = new Location();
-            $location1->setId(1);
-            $location1->setAddress('Pitt Street');
-
-            $content = json_encode(
-                array(
-                    'address' => $location1->getAddress(),
-                )
-            );
-            $response->setContent($content);
-        }
-
-        else {
-            $response->setStatusCode(404);
+                        $content = json_encode(
+                            array(
+                                'address' => $location1->getAddress(),
+                            )
+                        );
+                        $response->setContent($content);
+                    } else {
+                        $response->setStatusCode(404);
+                    }
+                }
+            }
         }
 
         return $response;

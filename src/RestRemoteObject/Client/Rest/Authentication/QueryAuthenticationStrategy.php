@@ -21,7 +21,7 @@ class QueryAuthenticationStrategy implements AuthenticationStrategyInterface
 
     /**
      * Authenticate the request
-     * @param Context $context
+     * @param  Context $context
      * @return void
      */
     public function authenticate(Context $context)
@@ -49,6 +49,7 @@ class QueryAuthenticationStrategy implements AuthenticationStrategyInterface
         if (null === $this->publicKey) {
             throw new MissingAuthenticationParameterException('Public key must be defined');
         }
+
         return $this->publicKey;
     }
 
@@ -74,6 +75,7 @@ class QueryAuthenticationStrategy implements AuthenticationStrategyInterface
         if (null === $this->privateKey) {
             throw new MissingAuthenticationParameterException('Private key must be defined');
         }
+
         return $this->privateKey;
     }
 

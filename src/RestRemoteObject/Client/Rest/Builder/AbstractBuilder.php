@@ -2,7 +2,7 @@
 
 namespace RestRemoteObject\Client\Rest\Builder;
 
-abstract class AbstractBuilder implements  BuilderInterface
+abstract class AbstractBuilder implements BuilderInterface
 {
     /**
      * @var string

@@ -4,7 +4,7 @@ namespace RestRemoteObjectMock;
 
 use Zend\Server\Client as BaseClient;
 
-class RestClient implements  BaseClient
+class RestClient implements BaseClient
 {
     public $method;
 

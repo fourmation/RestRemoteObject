@@ -81,7 +81,10 @@ class RestTest extends PHPUnit_Framework_TestCase
         $this->remote->get(1);
 
         $lastRequest = $this->httpClient->getLastRawRequest();
-        $this->assertEquals("GET http://my-company.com/rest/users/1 HTTP/1.1\r\nRest-Version: v3\r\nAccept: application/json", trim($lastRequest,  "\r\n"));
+        $this->assertEquals(
+            "GET http://my-company.com/rest/users/1 HTTP/1.1\r\nRest-Version: v3\r\nAccept: application/json",
+            trim($lastRequest, "\r\n")
+        );
     }
 
     public function testCanAuthenticateRequest()
@@ -90,21 +93,26 @@ class RestTest extends PHPUnit_Framework_TestCase
         $this->remote->get(1);
 
         $lastRequest = $this->httpClient->getLastRawRequest();
-        $this->assertEquals("GET http://my-company.com/rest/users/1?token=qwerty HTTP/1.1\r\nAccept: application/json", trim($lastRequest,  "\r\n"));
+        $this->assertEquals(
+            "GET http://my-company.com/rest/users/1?token=qwerty HTTP/1.1\r\nAccept: application/json",
+            trim($lastRequest, "\r\n")
+        );
     }
 
     /**
      * change to add a test zith post/put method
      *
-    public function testCanAddBuilder()
-    {
-        $this->restClient->addBuilder(new UserBuilder());
-        $this->remote->get(1);
-
-        $lastRequest = $this->httpClient->getLastRawRequest();
-        $this->assertEquals("GET http://my-company.com/rest/users/2" . " HTTP/1.1\r\nAccept: application/json", trim($lastRequest,  "\r\n"));
-    }
-    */
+     * public function testCanAddBuilder()
+     * {
+     * $this->restClient->addBuilder(new UserBuilder());
+     * $this->remote->get(1);
+     *
+     * $lastRequest = $this->httpClient->getLastRawRequest();
+     * $this->assertEquals(
+     *   "GET http://my-company.com/rest/users/2" . " HTTP/1.1\r\nAccept: application/json", trim($lastRequest,  "\r\n")
+     * );
+     * }
+     */
 
     public function testCanAddTimestampFeature()
     {
@@ -112,7 +120,10 @@ class RestTest extends PHPUnit_Framework_TestCase
         $this->remote->get(1);
 
         $lastRequest = $this->httpClient->getLastRawRequest();
-        $this->assertEquals("GET http://my-company.com/rest/users/1?t=" . time() . " HTTP/1.1\r\nAccept: application/json", trim($lastRequest,  "\r\n"));
+        $this->assertEquals(
+            "GET http://my-company.com/rest/users/1?t=" . time() . " HTTP/1.1\r\nAccept: application/json",
+            trim($lastRequest, "\r\n")
+        );
     }
 
     public function testCanPilotResultObject()
@@ -147,7 +158,8 @@ class RestTest extends PHPUnit_Framework_TestCase
 
         try {
             $this->remote->badResource();
-        } catch (RuntimeMethodException $e) {}
+        } catch (RuntimeMethodException $e) {
+        }
 
         $content = ob_get_clean();
         $this->assertEquals("Uri resource 'http://my-company.com/rest/bad'\n", $content);

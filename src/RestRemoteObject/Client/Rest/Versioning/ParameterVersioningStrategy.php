@@ -21,7 +21,7 @@ class ParameterVersioningStrategy implements VersioningStrategyInterface
 
     /**
      * Version the request
-     * @param Context $context
+     * @param  Context $context
      * @return void
      */
     public function version(Context $context)

@@ -9,8 +9,8 @@ interface ParserInterface
     /**
      * Parse response content
      *
-     * @param string $content
-     * @param Context $context
+     * @param  string  $content
+     * @param  Context $context
      * @return array
      */
     public function parse($content, Context $context);
