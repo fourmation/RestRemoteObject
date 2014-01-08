@@ -5,7 +5,8 @@ A REST client is also provided to facilitate the REST interaction.
 
 ## Rest remote objects examples
 
-Some examples are provided in the `examples/` directory. You can now transform all REST API in remote objects.
+Some examples are provided in the `examples/` directory : JIRA, ZenDesk and FlightStats !
+Now, you can transform all REST API in remote objects !
 
 ## Rest Adapter usages
 
@@ -209,7 +210,7 @@ var_dump($user->getName()); // 'Vincent'
 
 ## Custom response builder
 
-Two standars builder are provided : DefaultBuilder and GhostObjectBuilder.
+Two standards builder are provided : DefaultBuilder and GhostObjectBuilder.
 
 The DefaultBuilder transform data (provide by the response parser) to an object. By default, the `ClassMethods` hydrator
 will use, so if you have defined your getter/setter, the object will be built easily.
