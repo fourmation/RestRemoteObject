@@ -6,7 +6,7 @@ php:
   - 5.5
 
 before_script:
-  - php composer.phar install
+  - composer.phar install
 
 script:
   - cd tests
