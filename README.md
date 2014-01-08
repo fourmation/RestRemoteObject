@@ -3,10 +3,13 @@
 This library provide a REST adapter for the Remote Object pattern implemented by the ProxyManager project.
 A REST client is also provided to facilitate the REST interaction.
 
+[![Latest Stable Version](https://poser.pugx.org/fourmation/rest-remote-object/v/stable.png)](https://packagist.org/packages/fourmation/rest-remote-object)
+[![Latest Unstable Version](https://poser.pugx.org/fourmation/rest-remote-object/v/unstable.png)](https://packagist.org/packages/fourmation/rest-remote-object)
+
 ## Installation
 
 ```sh
-php composer.phar require fourmation/rest-remote-object:1.0.*
+php composer.phar require "fourmation/rest-remote-object:1.0.*"
 ```
 
 ## Rest remote objects examples
