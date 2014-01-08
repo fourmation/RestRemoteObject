@@ -10,7 +10,7 @@ $factory = new RemoteObjectFactory(
     new RestAdapter($client)
 );
 
-require __DIR__ . '/interfaces/search.php';
-require __DIR__ . '/../entities/issue.php';
+require __DIR__ . '/interfaces/project.php';
+require __DIR__ . '/../entities/project.php';
 
-return $factory->createProxy('SearchInterface');
+return $factory->createProxy('ProjectInterface');

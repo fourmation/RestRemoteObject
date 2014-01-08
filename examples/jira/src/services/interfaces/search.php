@@ -1,6 +1,6 @@
 <?php
 
-interface Search
+interface SearchInterface
 {
     /**
      * @rest\http GET

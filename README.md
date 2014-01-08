@@ -5,7 +5,7 @@ A REST client is also provided to facilitate the REST interaction.
 
 ## Rest remote objects examples
 
-Some examples are provided in the `examples/` directory : JIRA, ZenDesk and FlightStats !
+Some examples are provided in the `examples/` directory : JIRA, ZenDesk, FlightStats and AgileZen !
 Now, you can transform all REST API in remote objects !
 
 ## Rest Adapter usages
