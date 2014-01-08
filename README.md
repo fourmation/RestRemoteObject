@@ -3,6 +3,12 @@
 This library provide a REST adapter for the Remote Object pattern implemented by the ProxyManager project.
 A REST client is also provided to facilitate the REST interaction.
 
+## Installation
+
+```sh
+php composer.phar require fourmation/rest-remote-object:1.0.*
+```
+
 ## Rest remote objects examples
 
 Some examples are provided in the `examples/` directory : JIRA, ZenDesk, FlightStats and AgileZen !

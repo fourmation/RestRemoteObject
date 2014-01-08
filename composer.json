@@ -1,4 +1,13 @@
 {
+    "name": "fourmation/rest-remote-object",
+    "description": "This library provide a REST adapter for the Remote Object pattern implemented by the ProxyManager project.",
+    "authors": [
+        {
+            "name": "Blanchon Vincent",
+            "email": "blanchon.vincent@gmail.com",
+            "homepage": "http://github.com/blanchonvincent"
+        }
+    ],
     "require": {
         "ocramius/proxy-manager": "master-dev",
         "zendframework/zend-crypt": "2.*",
