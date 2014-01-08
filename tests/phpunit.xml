@@ -2,6 +2,8 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/3.7/phpunit.xsd"
         bootstrap="bootstrap.php"
+        colors="true"
+        verbose="true"
         >
     <testsuites>
         <testsuite name="RestRemoteObjectTest">
@@ -11,6 +13,20 @@
     <filter>
         <whitelist>
             <directory suffix=".php">../src/</directory>
+            <exclude>
+                <file>../src/RestRemoteObject/Client/Rest/Authentication/AuthenticationStrategyInterface.php</file>
+                <file>../src/RestRemoteObject/Client/Rest/Builder/BuilderInterface.php</file>
+                <file>../src/RestRemoteObject/Client/Rest/Debug/Writer/WriterInterface.php</file>
+                <file>../src/RestRemoteObject/Client/Rest/Exception/ExceptionInterface.php</file>
+                <file>../src/RestRemoteObject/Client/Rest/Exception/RemoteExceptionInterface.php</file>
+                <file>../src/RestRemoteObject/Client/Rest/Feature/FeatureInterface.php</file>
+                <file>../src/RestRemoteObject/Client/Rest/Format/FormatStrategyInterface.php</file>
+                <file>../src/RestRemoteObject/Client/Rest/ResponseHandler/Builder/BuilderInterface.php</file>
+                <file>../src/RestRemoteObject/Client/Rest/ResponseHandler/Guardian/GuardianInterface.php</file>
+                <file>../src/RestRemoteObject/Client/Rest/ResponseHandler/Parser/ParserInterface.php</file>
+                <file>../src/RestRemoteObject/Client/Rest/ResponseHandler/ResponseHandlerInterface.php</file>
+                <file>../src/RestRemoteObject/Client/Rest/Versioning/VersioningStrategyInterface.php</file>
+            </exclude>
         </whitelist>
     </filter>
 </phpunit>
