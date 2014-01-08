@@ -3,7 +3,11 @@
 This library provide a REST adapter for the Remote Object pattern implemented by the ProxyManager project.
 A REST client is also provided to facilitate the REST interaction.
 
-## Rest Adapter examples
+## Rest remote objects examples
+
+Some examples are provided in the `examples` directory. You can now transform all REST API in remote objects.
+
+## Rest Adapter usages
 
 A remote object proxy is an object that is located on a different system, but is used as if it was available locally.
 

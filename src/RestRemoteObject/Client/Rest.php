@@ -211,7 +211,7 @@ class Rest implements ClientInterface
 
         // response debug
         if ($debug && $debug->getVerbosity()->hasHttpResponseTrace()) {
-            $debug->getWriter()->write(sprintf("Http response '%s'\n", $response->getContent()));
+            $debug->getWriter()->write(sprintf("Http response '%s'\n", $response->getBody()));
         }
 
         $statusCode = $response->getStatusCode();
