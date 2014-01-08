@@ -3,7 +3,8 @@
 This library provide a REST adapter for the Remote Object pattern implemented by the ProxyManager project.
 A REST client is also provided to facilitate the REST interaction.
 
-[![Build Status](https://travis-ci.org/fourmation/RestRemoteObject.png?branch=master)](https://travis-ci.org/fourmation/RestRemoteObject)
+[![Build Status](https://api.travis-ci.org/fourmation/RestRemoteObject.png?branch=master)](https://travis-ci.org/fourmation/RestRemoteObject)
+[![Coverage Status](https://coveralls.io/repos/fourmation/RestRemoteObject/badge.png?branch=master)](https://coveralls.io/r/fourmation/RestRemoteObject)
 [![Latest Stable Version](https://poser.pugx.org/fourmation/rest-remote-object/v/stable.png)](https://packagist.org/packages/fourmation/rest-remote-object)
 [![Latest Unstable Version](https://poser.pugx.org/fourmation/rest-remote-object/v/unstable.png)](https://packagist.org/packages/fourmation/rest-remote-object)
 
