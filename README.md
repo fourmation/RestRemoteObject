@@ -1,6 +1,6 @@
 # Rest Remote Object
 
-This library provide a REST adapter for the Remote Object pattern implemented by the ProxyManager project.
+This library provide a REST adapter for the [Remote Object pattern](https://github.com/Ocramius/ProxyManager#remote-object) implemented by the [ProxyManager](https://github.com/Ocramius/ProxyManager) project.
 A REST client is also provided to facilitate the REST interaction.
 
 [![Build Status](https://api.travis-ci.org/fourmation/RestRemoteObject.png?branch=master)](https://travis-ci.org/fourmation/RestRemoteObject)
