@@ -1,6 +1,6 @@
 <?php
 
-namespace RestRemoteObjectTest\Client\Rest\Authentication;
+namespace RestRemoteObjectTest\Adapter;
 
 use RestRemoteObject\Adapter\Rest as RestAdapter;
 use RestRemoteObjectMock\RestClient;

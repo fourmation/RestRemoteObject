@@ -1,6 +1,6 @@
 <?php
 
-namespace RestRemoteObjectTest;
+namespace RestRemoteObjectTest\Client\Rest\Resource;
 
 use RestRemoteObject\Client\Rest\Resource\Binder;
 

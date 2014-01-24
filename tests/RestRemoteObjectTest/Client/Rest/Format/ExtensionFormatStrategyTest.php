@@ -1,6 +1,6 @@
 <?php
 
-namespace RestRemoteObjectTest\Client\Rest\Authentication;
+namespace RestRemoteObjectTest\Client\Rest\Format;
 
 use RestRemoteObject\Client\Rest\Context;
 use RestRemoteObject\Client\Rest\Format\ExtensionFormatStrategy;

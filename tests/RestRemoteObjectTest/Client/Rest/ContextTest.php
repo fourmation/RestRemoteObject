@@ -1,6 +1,6 @@
 <?php
 
-namespace RestRemoteObjectTest;
+namespace RestRemoteObjectTest\Client\Rest;
 
 use RestRemoteObject\Client\Rest\Context;
 use RestRemoteObject\Client\Rest\Resource\Descriptor;

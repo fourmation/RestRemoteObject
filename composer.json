@@ -16,7 +16,11 @@
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*",
-        "satooshi/php-coveralls": "~0.6"
+        "satooshi/php-coveralls": "~0.6",
+        "zendframework/zend-modulemanager": "2.*",
+        "zendframework/zend-test": "2.*",
+        "zendframework/zend-config": "2.*",
+        "fabpot/php-cs-fixer": "0.4.*@dev"
     },
     "autoload": {
         "psr-0": {
@@ -24,7 +28,10 @@
             "RestRemoteObjectTest\\" : "tests",
             "RestRemoteObjectTestAsset\\" : "tests",
             "RestRemoteObjectMock\\" : "tests"
-        }
+        },
+        "classmap": [
+            "./Module.php"
+        ]
     },
     "extra": {
         "branch-alias": {

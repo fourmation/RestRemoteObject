@@ -1,6 +1,6 @@
 <?php
 
-namespace RestRemoteObjectTest\Client\Rest\Authentication;
+namespace RestRemoteObjectTest\Client\Rest\Versioning;
 
 use RestRemoteObject\Client\Rest\Context;
 use RestRemoteObject\Client\Rest\Versioning\HeaderVersioningStrategy;

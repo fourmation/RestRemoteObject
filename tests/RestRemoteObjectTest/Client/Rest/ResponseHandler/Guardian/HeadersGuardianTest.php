@@ -13,7 +13,7 @@ class HeadersGuardianTest extends PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        set_error_handler(function($level, $message, $file, $line) { throw new \RestRemoteObject\Client\Rest\Exception\ResponseErrorException($message); }, E_USER_WARNING);
+        set_error_handler(function ($level, $message, $file, $line) { throw new \RestRemoteObject\Client\Rest\Exception\ResponseErrorException($message); }, E_USER_WARNING);
     }
 
     public function tearDown()

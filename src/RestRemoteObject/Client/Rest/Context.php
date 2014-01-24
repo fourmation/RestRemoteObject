@@ -45,7 +45,7 @@ class Context
      * Set the REST request
      *
      * @param Request $request
-     *                         @return $this
+     * @return $this
      */
     public function setRequest(Request $request)
     {
@@ -68,7 +68,7 @@ class Context
      * Set the resource descriptor
      *
      * @param Descriptor $resourceDescriptor
-     *                                       @return $this
+     * @return $this
      */
     public function setResourceDescriptor(Descriptor $resourceDescriptor)
     {
@@ -91,7 +91,7 @@ class Context
      * Set the resource binder
      *
      * @param Binder $resourceBinder
-     *                               @return $this
+     * @return $this
      */
     public function setResourceBinder(Binder $resourceBinder)
     {
@@ -114,7 +114,7 @@ class Context
      * Set the format
      *
      * @param Format $format
-     *                       @return $this
+     * @return $this
      */
     public function setFormat(Format $format)
     {

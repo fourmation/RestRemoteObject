@@ -265,7 +265,7 @@ class Rest implements ClientInterface
 
     /**
      * @param HttpClient $client
-     *                           @return $this
+     * @return $this
      */
     public function setHttpClient(HttpClient $client)
     {
@@ -314,7 +314,7 @@ class Rest implements ClientInterface
      * Add a builder
      *
      * @param BuilderInterface $builder
-     *                                  @return $this
+     * @return $this
      */
     public function addBuilder(BuilderInterface $builder)
     {
@@ -363,7 +363,7 @@ class Rest implements ClientInterface
     /**
      * Set the authentication strategy
      * @param AuthenticationStrategyInterface $authenticationStrategy
-     *                                                                @return $this
+     * @return $this
      */
     public function setAuthenticationStrategy(AuthenticationStrategyInterface $authenticationStrategy)
     {
@@ -384,7 +384,7 @@ class Rest implements ClientInterface
     /**
      * Set the versioning strategy
      * @param VersioningStrategyInterface $versioningStrategy
-     *                                                        @return $this
+     * @return $this
      */
     public function setVersioningStrategy(VersioningStrategyInterface $versioningStrategy)
     {
@@ -409,7 +409,7 @@ class Rest implements ClientInterface
     /**
      * Set the response handler
      * @param ResponseHandlerInterface $responseHandler
-     *                                                  @return $this
+     * @return $this
      */
     public function setResponseHandler(ResponseHandlerInterface $responseHandler)
     {
@@ -421,7 +421,7 @@ class Rest implements ClientInterface
     /**
      * Add feature
      * @param FeatureInterface $feature
-     *                                  @return $this
+     * @return $this
      */
     public function addFeature(FeatureInterface $feature)
     {
@@ -467,7 +467,7 @@ class Rest implements ClientInterface
      * Set debug
      *
      * @param Debug $debug
-     *                     @return $this
+     * @return $this
      */
     public function setDebug(Debug $debug)
     {

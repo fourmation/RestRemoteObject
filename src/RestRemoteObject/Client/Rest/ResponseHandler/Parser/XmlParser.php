@@ -39,7 +39,7 @@ class XmlParser implements ParserInterface
 
     /**
      * @param string $key
-     *                    @return $this
+     * @return $this
      */
     public function setKey($key)
     {

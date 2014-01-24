@@ -12,7 +12,7 @@ class UriFormatStrategy extends AbstractFormatStrategy
     protected $baseUrl;
 
     /**
-     * @param Format $format
+     * @param Format      $format
      * @param null|string $baseUrl
      */
     public function __construct(Format $format = null, $baseUrl = null)

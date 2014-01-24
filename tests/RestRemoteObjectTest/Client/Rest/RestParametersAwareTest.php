@@ -1,6 +1,6 @@
 <?php
 
-namespace RestRemoteObjectTest;
+namespace RestRemoteObjectTest\Client\Rest;
 
 use RestRemoteObjectTestAsset\Models\Location;
 use PHPUnit_Framework_TestCase;
