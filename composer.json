@@ -28,10 +28,7 @@
             "RestRemoteObjectTest\\" : "tests",
             "RestRemoteObjectTestAsset\\" : "tests",
             "RestRemoteObjectMock\\" : "tests"
-        },
-        "classmap": [
-            "./Module.php"
-        ]
+        }
     },
     "extra": {
         "branch-alias": {
