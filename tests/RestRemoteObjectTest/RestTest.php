@@ -1,6 +1,6 @@
 <?php
 
-namespace RestRemoteObjectTest\Client;
+namespace RestRemoteObjectTest;
 
 use RestRemoteObject\Adapter\Rest as RestAdapter;
 use RestRemoteObject\Client\Rest as RestClient;
