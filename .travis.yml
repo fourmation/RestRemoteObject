@@ -6,6 +6,8 @@ php:
   - 5.5
 
 before_script:
+  - pecl install oauth
+  - echo "extension=oauth.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
   - composer install
 
 script:
