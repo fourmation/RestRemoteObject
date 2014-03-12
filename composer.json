@@ -10,16 +10,16 @@
     ],
     "require": {
         "ocramius/proxy-manager": "0.5.*",
-        "zendframework/zend-crypt": "2.*",
-        "zendframework/zend-http": "2.*",
-        "zendframework/zend-server": "2.*"
+        "zendframework/zend-crypt": "2.3.*",
+        "zendframework/zend-http": "2.3.*",
+        "zendframework/zend-server": "2.3.*"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*",
         "satooshi/php-coveralls": "~0.6",
-        "zendframework/zend-modulemanager": "2.*",
-        "zendframework/zend-test": "2.*",
-        "zendframework/zend-config": "2.*",
+        "zendframework/zend-modulemanager": "2.3.*",
+        "zendframework/zend-test": "2.3.*",
+        "zendframework/zend-config": "2.3.*",
         "fabpot/php-cs-fixer": "0.4.*@dev"
     },
     "autoload": {
@@ -32,7 +32,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0.0-dev"
+            "dev-master": "1.1.0-dev"
         }
     }
 }

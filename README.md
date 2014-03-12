@@ -16,7 +16,7 @@ php composer.phar require "fourmation/rest-remote-object:1.0.*"
 
 ## Rest remote objects examples
 
-Some examples are provided in the `examples/` directory : JIRA, ZenDesk, FlightStats and AgileZen !
+Some examples are provided in the `examples/` directory : JIRA, ZenDesk, Xero, eWay, FlightStats and AgileZen !
 Now, you can transform all REST API in remote objects !
 
 ## Rest Adapter usages
