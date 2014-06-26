@@ -10,16 +10,17 @@
     ],
     "require": {
         "ocramius/proxy-manager": "0.5.*",
-        "zendframework/zend-crypt": "2.3.*",
-        "zendframework/zend-http": "2.3.*",
-        "zendframework/zend-server": "2.3.*"
+        "zendframework/zend-crypt": ">=2.2.0",
+        "zendframework/zend-filter": ">=2.2.0",
+        "zendframework/zend-http": ">=2.2.0",
+        "zendframework/zend-server": ">=2.2.0"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*",
         "satooshi/php-coveralls": "~0.6",
-        "zendframework/zend-modulemanager": "2.3.*",
-        "zendframework/zend-test": "2.3.*",
-        "zendframework/zend-config": "2.3.*",
+        "zendframework/zend-modulemanager": ">=2.2.0",
+        "zendframework/zend-test": ">=2.2.0",
+        "zendframework/zend-config": ">=2.2.0",
         "fabpot/php-cs-fixer": "0.4.*@dev"
     },
     "autoload": {
